@@ -145,13 +145,33 @@ class TravelLoginScreen extends StatelessWidget {
                                 // Redirect to ShopLayout if login is successful
                                 if (userCredential.user != null) {
                                   navigateAndFinish(context, TravelLayout());
+                                  Fluttertoast.showToast(
+                                    msg: 'Login Succcesfully',
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    backgroundColor: Colors.green,
+                                    textColor: Colors.white,
+                                  );
                                 }
                               } on FirebaseAuthException catch (e) {
                                 // Handle Firebase Authentication errors
                                 if (e.code == 'user-not-found') {
                                   print('No user found for that email.');
+                                  Fluttertoast.showToast(
+                                      msg: 'No user found for that email.',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      backgroundColor: Colors.red,
+                                      textColor: Colors.white, );
                                 } else if (e.code == 'wrong-password') {
                                   print('Wrong password provided for that user.');
+                                  Fluttertoast.showToast(
+                                    msg: 'Wrong password provided for that user.',
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                  );
                                 }
                               } catch (e) {
                                 print(e);
