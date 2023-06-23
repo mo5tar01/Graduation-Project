@@ -1,14 +1,87 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../../../shared/components/components.dart';
 import '../Details/Details_Screen.dart';
 import '../recommendations/recommendations_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late User user;
+  late DocumentSnapshot userData;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    user = FirebaseAuth.instance.currentUser!;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get()
+        .then((document) {
+      if (document.exists) {
+        setState(() {
+          userData = document;
+        });
+      }
+    })
+    .onError((error, stackTrace) {
+    print('Error retrieving document: $error');
+    print('Stack trace: $stackTrace');
+    });
+  }
+  Widget _header() {
+    return Text(
+      'Welcome to my app!',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 24.0,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  Widget _userPersonalInfo(String userName) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Hi, $userName!',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 5.0),
+        Text(
+          'Welcome back to my app.',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 14.0,
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (!userData.exists) {
+      // Return a loading indicator until the data is loaded
+      return Center(child: CircularProgressIndicator());
+    }
+    String userName = userData['name'];
+    String profilePictureUrl = userData['profilePictureUrl'];
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
@@ -16,11 +89,7 @@ class HomeScreen extends StatelessWidget {
           CustomPaint(
             painter: AppBarPainter(),
             size: const Size(100,100),
-            child:
-            _appBarContent(),
-
-
-
+            child: _appBarContent(userName, profilePictureUrl),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 40.0,right: 40.0,),
@@ -45,10 +114,6 @@ class HomeScreen extends StatelessWidget {
                     Container(
                       height: 150,
                       width: 150,
-                      // decoration: BoxDecoration(
-                      //   border: Border.all(
-                      //       width: 0.5,),
-                      // borderRadius: BorderRadius.circular(10),),
                       child: InkWell(
                         onTap: (){
                           navigateTo(context, detailsScreen(),);
@@ -153,15 +218,11 @@ class HomeScreen extends StatelessWidget {
 
                       ),
                     ),
-
                   ]
-
-
-
-
               ),
             ),
           ),
+
           SizedBox(
             height: 30,
           ),
@@ -190,13 +251,12 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
 
-
         ],
       ),
-
     );
   }
-  Widget _appBarContent(){
+
+  Widget _appBarContent(String userName, String profilePictureUrl) {
     return Container(
       height: 180,
       width:400,
@@ -210,193 +270,52 @@ class HomeScreen extends StatelessWidget {
           Container(
             child: Column(
               children: [
-                _userInfo(),
+                _userInfo(userName, profilePictureUrl),
               ],
             ),
-
           ),
-
-        ],
-
-      ),
-
-    );
-  }
-  Widget _header(){
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-      child: Row(
-        children: const [
-          Icon(Icons.menu, color: Colors.white,),
         ],
       ),
     );
   }
-  Widget _userInfo(){
+
+  Widget _userInfo(String userName, String profilePictureUrl){
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
         Expanded(
             flex:1,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  _userPersonalInfo(),
+                  _userPersonalInfo(userName),
                   const SizedBox(height: 25,),
-
                 ],
               ),
             )),
 
         Padding(
           padding: const EdgeInsets.fromLTRB(8, 20, 20, 0),
-          child: _userAvatar(),
+          child: profilePictureUrl != null
+              ? _userAvatar(profilePictureUrl)
+              : const CircleAvatar(radius: 45),
         ),
       ],
     );
   }
-  Widget _userAvatar(){
+
+  Widget _userAvatar(String profilePictureUrl) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
         boxShadow: [BoxShadow(blurRadius: 10, color: Colors.blueGrey, spreadRadius: 3)],
       ),
-      child: const CircleAvatar(
+      child: CircleAvatar(
         radius: 45,
-        backgroundImage: AssetImage("images/Me.jpg"),
+        backgroundImage: NetworkImage(profilePictureUrl),
       ),
     );
-  }
-  Widget _userPersonalInfo() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          flex: 2,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  boxShadow: [BoxShadow(blurRadius:20, color: Colors.lightBlue, spreadRadius: 1)],
-                ),
-                child: const Text(
-                  'Mohamed Mokhtar',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 28,
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        offset: Offset (-0.3,-0.3),
-                        color: Colors.black,),
-                      Shadow( // bottomRight
-                          offset: Offset(0.3, -0.3),
-                          color: Colors.black
-                      ),
-                      Shadow( // topRight
-                          offset: Offset(0.3, 0.3),
-                          color: Colors.black
-                      ),
-                      Shadow( // topLeft
-                          offset: Offset(-0.3, 0.3),
-                          color: Colors.black
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10, ),
-              Row(
-                children: const [
-                  Icon(
-                    Icons.location_on_outlined,
-                    color: Colors.white,
-                    size: 15,
-                  ),
-                  SizedBox(width: 5, ),
-                  Text(
-                    'Cairo, Egypt',
-                    style: TextStyle(
-                      fontSize: 10,
-                      letterSpacing: 2,
-                      color: Colors.white,
-                      shadows: [
-                        Shadow(
-                          offset: Offset (-0.1,-0.1),
-                          color: Colors.black,),
-                        Shadow( // bottomRight
-                            offset: Offset(0.1, -0.1),
-                            color: Colors.black
-                        ),
-                        Shadow( // topRight
-                            offset: Offset(0.1, 0.1),
-                            color: Colors.black
-                        ),
-                        Shadow( // topLeft
-                            offset: Offset(-0.1, 0.1),
-                            color: Colors.black
-                        ),
-                      ],
-
-
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-        // Expanded(
-        //   flex: 1,
-        //   child: Container(
-        //     height: 30,
-        //     child: const Center(
-        //       child: Text(
-        //         'Follow',
-        //         style: TextStyle(
-        //             color: Color.fromARGB(255, 177, 22, 234),
-        //             fontWeight: FontWeight.w500
-        //         ),
-        //       ),
-        //     ),
-        //     decoration: BoxDecoration(
-        //       color: Colors.white,
-        //       borderRadius: BorderRadius.circular(10),
-        //     ),
-        //   ),
-        // )
-      ],
-    );
-  }
-}
-class AppBarPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size){
-    var rect = Offset.zero & size;
-    Paint paint = Paint();
-    Path path = Path();
-    paint.shader = const LinearGradient(
-      begin: Alignment.centerLeft,
-      end: Alignment.centerRight,
-      colors: [
-        Colors.lightBlueAccent,
-        Colors.blue,
-      ],
-    ).createShader(rect);
-    path.lineTo(0, size.height - size.height /  3);
-    path.conicTo(size.width / 1.2, size.height/2, size.width,size.height - size.height /  4, 3);
-    path.lineTo(size.width, 0);
-    canvas.drawShadow(path, Colors.blue, 4, false);
-    path.close();
-    canvas.drawPath(path, paint);
-
-  }
-  @override
-  bool shouldRepaint (covariant CustomPainter oldDelegate){
-    return true;
   }
 }

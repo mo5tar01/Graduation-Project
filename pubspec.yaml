@@ -37,7 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.4
   sqflite:
   intl: ^0.17.0
-  conditional: ^0.0.1
+  #conditional: ^0.0.1
   conditional_builder_null_safety: ^0.0.6
   bloc: ^8.1.0
   flutter_bloc: ^8.1.1
@@ -48,6 +48,8 @@ dependencies:
   smooth_page_indicator: ^1.0.0+2
   rive: ^0.9.1
   fluttertoast: ^8.0.7
+  image_picker: ^0.8.4+4
+  file_picker: ^5.3.2
 
 
 
@@ -56,6 +58,8 @@ dependencies:
   firebase_auth: ^4.6.3
   firebase_database: ^10.2.3
   cloud_firestore: ^4.8.1
+  firebase_storage: ^11.2.3
+  
 
 dev_dependencies:
   flutter_test:

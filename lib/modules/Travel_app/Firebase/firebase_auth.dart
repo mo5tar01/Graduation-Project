@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -7,33 +10,39 @@ class Auth {
   FirebaseDatabase.instance.reference().child('users');
 
   // Sign up the user with their email and password
-  Future<User?> signUp(
-      String email, String password, String firstName, String lastName, String phoneNumber) async {
+  Future<User?> signUp(String email, String password, String firstName, String lastName, String phoneNumber, File? profilePicture) async {
     try {
-      UserCredential userCredential = await _auth
-          .createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
       // Get the user's uid
       String uid = userCredential.user!.uid;
 
-      // Save the user's data to the database
-      await _databaseReference.child(uid).set({
+      // Upload profile picture to Firebase Storage
+      String? profilePictureUrl;
+      if (profilePicture != null) {
+        firebase_storage.Reference storageRef = firebase_storage.FirebaseStorage.instance
+            .ref()
+            .child('users/$uid/profilePicture');
+        firebase_storage.UploadTask uploadTask = storageRef.putFile(profilePicture);
+        await uploadTask.whenComplete(() => null);
+        profilePictureUrl = await storageRef.getDownloadURL();
+      }
+
+      // Save the user's data to Firestore
+      await FirebaseFirestore.instance.collection('users').doc(uid).set({
         'firstName': firstName,
         'lastName': lastName,
+        'email': email,
+        'password': password,
         'phoneNumber': phoneNumber,
-        // Add other fields for the feature ratings
+        'profilePictureUrl': profilePictureUrl,
       });
 
       // Return the user object
       return userCredential.user;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
     } catch (e) {
-      print(e);
+      print('Error creating user: $e');
+      return null;
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +22,7 @@ void main() async
   DioHelper.init();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  final storage = FirebaseStorage.instance;
   runApp(MyApp());
 }
 

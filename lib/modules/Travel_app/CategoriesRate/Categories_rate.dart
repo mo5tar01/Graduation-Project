@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:travel_recommendation/modules/Travel_app/register/Profile.dart';
 
 import '../Main/Home_Screen.dart';
 
