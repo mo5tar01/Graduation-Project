@@ -92,13 +92,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
     List<String> imageUrls = [
       'https://media-cdn.tripadvisor.com/media/photo-o/0e/11/3c/e0/photo1jpg.jpg',
-    'https://media-cdn.tripadvisor.com/media/photo-o/1b/14/6c/01/photo-ops-with-trolls.jpg',
-    'https://media-cdn.tripadvisor.com/media/photo-o/0f/5b/82/f2/interior-of-the-main.jpg',
-    'https://media-cdn.tripadvisor.com/media/photo-o/11/88/12/cb/sunset.jpg',
-    'https://media-cdn.tripadvisor.com/media/photo-m/1280/15/0c/c5/4c/red-dunes-desert-camel.jpg',
-    'https://media-cdn.tripadvisor.com/media/photo-m/1280/15/4d/5f/04/built-for-the-1915-16.jpg',
-    'https://media-cdn.tripadvisor.com/media/photo-m/1280/03/56/93/aa/great-court-at-the-british.jpg',
-    'https://media-cdn.tripadvisor.com/media/photo-o/0c/53/53/2c/img-20160729-205021-largejpg.jpg',
+      'https://media-cdn.tripadvisor.com/media/photo-o/1b/14/6c/01/photo-ops-with-trolls.jpg',
+      'https://media-cdn.tripadvisor.com/media/photo-o/0f/5b/82/f2/interior-of-the-main.jpg',
+      'https://media-cdn.tripadvisor.com/media/photo-o/11/88/12/cb/sunset.jpg',
+      'https://media-cdn.tripadvisor.com/media/photo-m/1280/15/0c/c5/4c/red-dunes-desert-camel.jpg',
+      'https://media-cdn.tripadvisor.com/media/photo-m/1280/15/4d/5f/04/built-for-the-1915-16.jpg',
+      'https://media-cdn.tripadvisor.com/media/photo-m/1280/03/56/93/aa/great-court-at-the-british.jpg',
+      'https://media-cdn.tripadvisor.com/media/photo-o/0c/53/53/2c/img-20160729-205021-largejpg.jpg',
     ];
 
     return Scaffold(
