@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -39,9 +38,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
             child: _profilePicture != null
                 ? Image.file(_profilePicture!)
                 : Container(
-              color: Colors.grey,
-              child: Icon(Icons.camera_alt),
-            ),
+                    color: Colors.grey,
+                    child: Icon(Icons.camera_alt),
+                  ),
           ),
         ),
       ),

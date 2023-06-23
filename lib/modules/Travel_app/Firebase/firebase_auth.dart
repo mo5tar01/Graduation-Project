@@ -10,9 +10,11 @@ class Auth {
   FirebaseDatabase.instance.reference().child('users');
 
   // Sign up the user with their email and password
-  Future<User?> signUp(String email, String password, String firstName, String lastName, String phoneNumber, File? profilePicture) async {
+  Future<User?> signUp(String email, String password, String firstName,
+      String lastName, String phoneNumber, File? profilePicture, String csvFilePath) async {
     try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await _auth
+          .createUserWithEmailAndPassword(email: email, password: password);
 
       // Get the user's uid
       String uid = userCredential.user!.uid;
@@ -20,12 +22,20 @@ class Auth {
       // Upload profile picture to Firebase Storage
       String? profilePictureUrl;
       if (profilePicture != null) {
-        firebase_storage.Reference storageRef = firebase_storage.FirebaseStorage.instance
+        firebase_storage.Reference storageRef = firebase_storage
+            .FirebaseStorage.instance
             .ref()
             .child('users/$uid/profilePicture');
-        firebase_storage.UploadTask uploadTask = storageRef.putFile(profilePicture);
+        firebase_storage.UploadTask uploadTask =
+        storageRef.putFile(profilePicture);
         await uploadTask.whenComplete(() => null);
         profilePictureUrl = await storageRef.getDownloadURL();
+      }
+
+      // Upload CSV file to Firebase Storage
+      String? csvFileUrl;
+      if (csvFilePath != null) {
+        csvFileUrl = await uploadCSVFileToStorage(uid, csvFilePath);
       }
 
       // Save the user's data to Firestore
@@ -36,6 +46,7 @@ class Auth {
         'password': password,
         'phoneNumber': phoneNumber,
         'profilePictureUrl': profilePictureUrl,
+        'csvFileUrl': csvFileUrl,
       });
 
       // Return the user object
@@ -43,6 +54,22 @@ class Auth {
     } catch (e) {
       print('Error creating user: $e');
       return null;
+    }
+  }
+
+  // Upload a CSV file to Firebase Storage
+  Future<String> uploadCSVFileToStorage(String uid, String filePath) async {
+    try {
+      firebase_storage.Reference storageRef =
+      firebase_storage.FirebaseStorage.instance.ref().child('users/$uid/csvFile');
+      File file = File("most_rated_attractions.csv");
+      firebase_storage.UploadTask uploadTask = storageRef.putFile(file);
+      await uploadTask.whenComplete(() => null);
+      String downloadUrl = await storageRef.getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      print('Error uploading CSV file: $e');
+      rethrow;
     }
   }
 
@@ -66,10 +93,14 @@ class Auth {
   }
 
   // Update the user's feature ratings in the database
-  Future<void> updateFeatureRating(String uid, String featureName, double rating) async {
+  Future<void> updateFeatureRating(
+      String uid, String featureName, double rating) async {
     try {
       // Update the user's rating for the given feature in the database
-      await _databaseReference.child(uid).child('featureRatings').update({featureName: rating});
+      await _databaseReference
+          .child(uid)
+          .child('featureRatings')
+          .update({featureName: rating});
     } catch (e) {
       print('Error updating feature rating: $e');
     }

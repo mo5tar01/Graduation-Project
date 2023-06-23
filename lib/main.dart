@@ -13,11 +13,7 @@ import 'layout/TravelApp/cubit/cubit.dart';
 import 'layout/TravelApp/cubit/states.dart';
 import 'modules/Travel_app/on_boarding/on_boarding_screen.dart';
 
-
-
-void main() async
-{
-
+void main() async {
   Bloc.observer = MyBlocObserver();
   DioHelper.init();
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,8 +22,6 @@ void main() async
   runApp(MyApp());
 }
 
-
-
 class MyApp extends StatelessWidget {
   MyApp();
 
@@ -35,9 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (BuildContext context) => ShopCubit())
-      ],
+      providers: [BlocProvider(create: (BuildContext context) => ShopCubit())],
       child: BlocConsumer<ShopCubit, ShopStates>(
         listener: (context, state) {},
         builder: (context, state) {

@@ -27,7 +27,8 @@ class _ShopRegisterScreenState extends State<ShopRegisterScreen> {
 
   void _signUp() async {
     try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
@@ -35,16 +36,21 @@ class _ShopRegisterScreenState extends State<ShopRegisterScreen> {
       // Upload profile picture to Firebase Storage
       String? downloadUrl;
       if (_profilePictureFile != null) {
-        firebase_storage.Reference storageRef = firebase_storage.FirebaseStorage.instance
+        firebase_storage.Reference storageRef = firebase_storage
+            .FirebaseStorage.instance
             .ref()
             .child('users/${userCredential.user!.uid}/profilePicture');
-        firebase_storage.UploadTask uploadTask = storageRef.putFile(_profilePictureFile!);
+        firebase_storage.UploadTask uploadTask =
+            storageRef.putFile(_profilePictureFile!);
         await uploadTask.whenComplete(() => null);
         downloadUrl = await storageRef.getDownloadURL();
       }
 
       // Save user data to Firestore
-      await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .set({
         'name': _nameController.text,
         'email': _emailController.text,
         'profilePictureUrl': downloadUrl,
@@ -202,9 +208,9 @@ class _ShopRegisterScreenState extends State<ShopRegisterScreen> {
                         image: _profilePictureFile == null
                             ? null
                             : DecorationImage(
-                          image: FileImage(_profilePictureFile!),
-                          fit: BoxFit.cover,
-                        ),
+                                image: FileImage(_profilePictureFile!),
+                                fit: BoxFit.cover,
+                              ),
                       ),
                       child: _profilePictureFile == null
                           ? Icon(Icons.person, size: 70)
