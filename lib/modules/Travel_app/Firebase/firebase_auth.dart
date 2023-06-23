@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:csv/csv.dart';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:flutter/services.dart';
 
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -10,11 +12,17 @@ class Auth {
   FirebaseDatabase.instance.reference().child('users');
 
   // Sign up the user with their email and password
-  Future<User?> signUp(String email, String password, String firstName,
-      String lastName, String phoneNumber, File? profilePicture, String csvFilePath) async {
+  Future<User?> signUp(
+      String email,
+      String password,
+      String firstName,
+      String lastName,
+      String phoneNumber,
+      File? profilePicture,
+      ) async {
     try {
-      UserCredential userCredential = await _auth
-          .createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
 
       // Get the user's uid
       String uid = userCredential.user!.uid;
@@ -26,17 +34,15 @@ class Auth {
             .FirebaseStorage.instance
             .ref()
             .child('users/$uid/profilePicture');
-        firebase_storage.UploadTask uploadTask =
-        storageRef.putFile(profilePicture);
+        firebase_storage.UploadTask uploadTask = storageRef.putFile(profilePicture);
         await uploadTask.whenComplete(() => null);
         profilePictureUrl = await storageRef.getDownloadURL();
       }
 
-      // Upload CSV file to Firebase Storage
+      // Retrieve image URLs from CSV and upload to Firebase Storage
       String? csvFileUrl;
-      if (csvFilePath != null) {
-        csvFileUrl = await uploadCSVFileToStorage(uid, csvFilePath);
-      }
+      List<String> imageUrls = await getImageUrlsFromCSV();
+      csvFileUrl = await uploadImageUrlsToStorage(uid, imageUrls);
 
       // Save the user's data to Firestore
       await FirebaseFirestore.instance.collection('users').doc(uid).set({
@@ -57,21 +63,60 @@ class Auth {
     }
   }
 
-  // Upload a CSV file to Firebase Storage
-  Future<String> uploadCSVFileToStorage(String uid, String filePath) async {
+
+  // Retrieve image URLs from CSV
+  Future<List<String>> getImageUrlsFromCSV() async {
+    try {
+      // Load CSV file from assets
+      String csvString = await rootBundle.loadString('assets/most_rated_attractions.csv');
+
+      // Parse the CSV string
+      List<List<dynamic>> csvTable = CsvToListConverter().convert(csvString);
+
+      // Extract image URLs from the CSV
+      List<String> imageUrls = [];
+      for (var row in csvTable) {
+        // Assuming the image URL column is at index 0
+        imageUrls.add(row[0]);
+      }
+
+      return imageUrls;
+    } catch (e) {
+      print('Error reading CSV file: $e');
+      rethrow;
+    }
+  }
+
+
+  // Upload image URLs to Firebase Storage
+  Future<String> uploadImageUrlsToStorage(String uid, List<String> imageUrls) async {
     try {
       firebase_storage.Reference storageRef =
       firebase_storage.FirebaseStorage.instance.ref().child('users/$uid/csvFile');
-      File file = File("most_rated_attractions.csv");
-      firebase_storage.UploadTask uploadTask = storageRef.putFile(file);
+      String csvFilePath = 'user_${uid}_image_urls.csv';
+
+      // Create CSV content with image URLs
+      List<List<dynamic>> csvList = imageUrls.map((url) => [url]).toList();
+      String csvString = const ListToCsvConverter().convert(csvList);
+
+      // Create temporary CSV file
+      File tempCsvFile = await File(csvFilePath).writeAsString(csvString);
+
+      // Upload CSV file to Firebase Storage
+      firebase_storage.UploadTask uploadTask = storageRef.putFile(tempCsvFile);
       await uploadTask.whenComplete(() => null);
       String downloadUrl = await storageRef.getDownloadURL();
+
+      // Delete temporary CSV file
+      await tempCsvFile.delete();
+
       return downloadUrl;
     } catch (e) {
       print('Error uploading CSV file: $e');
       rethrow;
     }
   }
+
 
   // Log in the user with their email and password
   Future<User?> logIn(String email, String password) async {

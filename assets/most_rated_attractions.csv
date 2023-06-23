@@ -1,20 +1,9 @@
-cityAddress,countryAddress,Image,Name,numReviews,rankingDenomirator,rankingPosition,Rating,rawRanking,subCategory,subType
-Las Vegas,United States,https://media-cdn.tripadvisor.com/media/photo-o/0e/11/3c/e0/photo1jpg.jpg,Wynn Las Vegas Casino,6429,523.0,14.0,4.5,4.090265751,Casinos & Gambling,Casinos
-Wellington,New Zealand,https://media-cdn.tripadvisor.com/media/photo-o/1b/14/6c/01/photo-ops-with-trolls.jpg,Weta Workshop,3152,9.0,2.0,4.5,4.119949341,Classes & Workshops,Lessons & Workshops
-Buenos Aires,Argentina,https://media-cdn.tripadvisor.com/media/photo-o/0f/5b/82/f2/interior-of-the-main.jpg,Teatro Colon,24163,969.0,1.0,5.0,5.0,Concerts & Shows,Theaters
-Edinburgh,United Kingdom,https://media-cdn.tripadvisor.com/media/photo-o/11/88/12/cb/sunset.jpg,The Royal Edinburgh Military Tattoo,6692,525.0,43.0,5.0,3.982610464,Events,Cultural Events
-Dubai,United Arab Emirates,https://media-cdn.tripadvisor.com/media/photo-m/1280/15/0c/c5/4c/red-dunes-desert-camel.jpg,OceanAir Travels,41746,154.0,1.0,5.0,4.481301785,Food & Drink,Multi-day Tours
-San Diego,United States,https://media-cdn.tripadvisor.com/media/photo-m/1280/15/4d/5f/04/built-for-the-1915-16.jpg,Balboa Park,13001,467.0,4.0,4.5,4.792022705,Fun & Games,Parks
-London,United Kingdom,https://media-cdn.tripadvisor.com/media/photo-m/1280/03/56/93/aa/great-court-at-the-british.jpg,The British Museum,73410,2591.0,7.0,4.5,4.897721767,Museums,History Museums
-Madrid,Spain,https://media-cdn.tripadvisor.com/media/photo-o/0c/53/53/2c/img-20160729-205021-largejpg.jpg,Parque del Retiro,56553,1164.0,1.0,4.5,5.0,Nature & Parks,Parks
-Berlin,Germany,https://media-cdn.tripadvisor.com/media/photo-o/0b/37/19/6c/sandemans-new-berlin.jpg,SANDEMANs NEW Europe - Berlin,33050,611.0,2.0,5.0,4.347846508,Nightlife,Private Tours
-Istanbul,Turkiye,https://media-cdn.tripadvisor.com/media/photo-o/21/f6/48/c6/caption.jpg,Istanbul Shuttle Port,1072,599.0,4.0,5.0,4.443747044,Other,Taxis & Shuttles
-Miami Beach,United States,https://media-cdn.tripadvisor.com/media/photo-o/04/95/01/20/boucher-brothers.jpg,Boucher Brothers,2803,372.0,2.0,5.0,4.463644981,Outdoor Activities,Gear Rentals
-Dubai,United Arab Emirates,https://media-cdn.tripadvisor.com/media/photo-o/0d/8c/0c/1a/taken-5-years-ago-it.jpg,The Dubai Mall,31153,544.0,3.0,4.5,4.839016438,Shopping,Shopping Malls
-Barcelona,Spain,https://media-cdn.tripadvisor.com/media/photo-o/16/26/fb/5f/exterior.jpg,Basilica de la Sagrada Familia,165996,1309.0,1.0,4.5,5.0,Sights & Landmarks,Churches & Cathedrals
-Istanbul,Turkiye,https://media-cdn.tripadvisor.com/media/photo-m/1280/1c/31/85/af/inside-hamam.jpg,Cagaloglu Hamam,4313,327.0,1.0,5.0,4.479180336,Spas & Wellness,Health/Fitness Clubs & Gyms
-Amsterdam,The Netherlands,https://media-cdn.tripadvisor.com/media/photo-o/12/aa/9c/7a/let-s-talk-about-maritime.jpg,Flagship Amsterdam,36648,226.0,68.0,5.0,3.358314276,Tours,City Tours
-Bangkok,Thailand,https://media-cdn.tripadvisor.com/media/photo-w/0c/01/01/3b/bangkok-skytrain.jpg,BTS Skytrain,49348,759.0,2.0,4.5,4.911253929,Transportation,Mass Transportation Systems
-Panama City,Panama,https://media-cdn.tripadvisor.com/media/photo-o/0e/96/c0/36/photo5jpg.jpg,Miraflores Visitor Center,8359,160.0,15.0,4.5,3.944004059,Traveler Resources,Visitor Centers
-Los Angeles,United States,https://media-cdn.tripadvisor.com/media/photo-o/07/ef/4c/ba/universal-studios-hollywood.jpg,Universal Studios Hollywood,37017,785.0,3.0,4.5,4.503148556,Water & Amusement Parks,Theme Parks
-Lisbon,Portugal,https://media-cdn.tripadvisor.com/media/photo-m/1280/1b/84/7c/0c/reduces-the-number-of.jpg,Oceanario de Lisboa,40295,793.0,2.0,4.5,4.930315018,Zoos & Aquariums,Aquariums
+Image
+https://media-cdn.tripadvisor.com/media/photo-o/0e/11/3c/e0/photo1jpg.jpg
+https://media-cdn.tripadvisor.com/media/photo-o/1b/14/6c/01/photo-ops-with-trolls.jpg
+https://media-cdn.tripadvisor.com/media/photo-o/0f/5b/82/f2/interior-of-the-main.jpg
+https://media-cdn.tripadvisor.com/media/photo-o/11/88/12/cb/sunset.jpg
+https://media-cdn.tripadvisor.com/media/photo-m/1280/15/0c/c5/4c/red-dunes-desert-camel.jpg
+https://media-cdn.tripadvisor.com/media/photo-m/1280/15/4d/5f/04/built-for-the-1915-16.jpg
+https://media-cdn.tripadvisor.com/media/photo-m/1280/03/56/93/aa/great-court-at-the-british.jpg
+https://media-cdn.tripadvisor.com/media/photo-o/0c/53/53/2c/img-20160729-205021-largejpg.jpg
