@@ -90,190 +90,242 @@ class _HomeScreenState extends State<HomeScreen> {
     String imageUrl = csvData[2][1];
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Column(
-        children: [
-          CustomPaint(
-            painter: AppBarPainter(),
-            size: const Size(100, 100),
-            child: _appBarContent(userName, profilePictureUrl),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 40.0,
-              right: 40.0,
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            CustomPaint(
+              painter: AppBarPainter(),
+              size: const Size(100, 100),
+              child: _appBarContent(userName, profilePictureUrl),
             ),
-            child: TextFormField(
-                decoration: InputDecoration(
-              hintText: 'Search',
-              prefixIcon: Icon(Icons.search),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-            )),
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              child: Row(children: [
-                Container(
-                  height: 150,
-                  width: 150,
-                  child: InkWell(
-                    onTap: () {
-                      navigateTo(
-                        context,
-                        detailsScreen(),
-                      );
-                    },
-                    child: Image.network(imageUrl),
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  height: 150,
-                  width: 150,
-                  child: InkWell(
-                    onTap: () {
-                      navigateTo(
-                        context,
-                        detailsScreen(),
-                      );
-                    },
-                    child: Image.network(imageUrl),
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  height: 150,
-                  width: 150,
-                  // decoration: BoxDecoration(
-                  //   border: Border.all(
-                  //       width: 0.5,),
-                  // borderRadius: BorderRadius.circular(10),),
-                  child: InkWell(
-                    onTap: () {
-                      navigateTo(
-                        context,
-                        detailsScreen(),
-                      );
-                    },
-                    child: Image.network(imageUrl),
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  height: 150,
-                  width: 150,
-                  // decoration: BoxDecoration(
-                  //   border: Border.all(
-                  //       width: 0.5,),
-                  // borderRadius: BorderRadius.circular(10),),
-                  child: InkWell(
-                    onTap: () {
-                      navigateTo(
-                        context,
-                        detailsScreen(),
-                      );
-                    },
-                    child: Image.network(imageUrl),
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  height: 150,
-                  width: 150,
-                  // decoration: BoxDecoration(
-                  //   border: Border.all(
-                  //       width: 0.5,),
-                  // borderRadius: BorderRadius.circular(10),),
-                  child: InkWell(
-                    onTap: () {
-                      navigateTo(
-                        context,
-                        detailsScreen(),
-                      );
-                    },
-                    child: Image.network(imageUrl),
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  height: 150,
-                  width: 150,
-                  // decoration: BoxDecoration(
-                  //   border: Border.all(
-                  //       width: 0.5,),
-                  // borderRadius: BorderRadius.circular(10),),
-                  child: InkWell(
-                    onTap: () {
-                      navigateTo(
-                        context,
-                        detailsScreen(),
-                      );
-                    },
-                    child: Image.network(imageUrl),
-                  ),
-                ),
-              ]),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 40.0,
+                right: 40.0,
+              ),
+              child: TextFormField(
+                  decoration: InputDecoration(
+                hintText: 'Search',
+                prefixIcon: Icon(Icons.search),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              )),
             ),
-          ),
-          SizedBox(
-            height: 30,
-          ),
-                Container(
-                  height: 150,
-                  width: 150,
-                  // decoration: BoxDecoration(
-                  //   border: Border.all(
-                  //       width: 0.5,),
-                  // borderRadius: BorderRadius.circular(10),),
-                  child: InkWell(
-                    onTap: () {
-                      navigateTo(
-                        context,
-                        detailsScreen(),
-                      );
-                    },
-                    child: Image.network(imageUrl),
+            SizedBox(
+              height: 30,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                child: Row(children: [
+                  Container(
+                    height: 150,
+                    width: 150,
+                    child: InkWell(
+                      onTap: () {
+                        navigateTo(
+                          context,
+                          detailsScreen(),
+                        );
+                      },
+                      child: Image.network(imageUrl),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    height: 150,
+                    width: 150,
+                    child: InkWell(
+                      onTap: () {
+                        navigateTo(
+                          context,
+                          detailsScreen(),
+                        );
+                      },
+                      child: Image.network(imageUrl),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    height: 150,
+                    width: 150,
+                    // decoration: BoxDecoration(
+                    //   border: Border.all(
+                    //       width: 0.5,),
+                    // borderRadius: BorderRadius.circular(10),),
+                    child: InkWell(
+                      onTap: () {
+                        navigateTo(
+                          context,
+                          detailsScreen(),
+                        );
+                      },
+                      child: Image.network(imageUrl),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    height: 150,
+                    width: 150,
+                    // decoration: BoxDecoration(
+                    //   border: Border.all(
+                    //       width: 0.5,),
+                    // borderRadius: BorderRadius.circular(10),),
+                    child: InkWell(
+                      onTap: () {
+                        navigateTo(
+                          context,
+                          detailsScreen(),
+                        );
+                      },
+                      child: Image.network(imageUrl),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    height: 150,
+                    width: 150,
+                    // decoration: BoxDecoration(
+                    //   border: Border.all(
+                    //       width: 0.5,),
+                    // borderRadius: BorderRadius.circular(10),),
+                    child: InkWell(
+                      onTap: () {
+                        navigateTo(
+                          context,
+                          detailsScreen(),
+                        );
+                      },
+                      child: Image.network(imageUrl),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    height: 150,
+                    width: 150,
+                    // decoration: BoxDecoration(
+                    //   border: Border.all(
+                    //       width: 0.5,),
+                    // borderRadius: BorderRadius.circular(10),),
+                    child: InkWell(
+                      onTap: () {
+                        navigateTo(
+                          context,
+                          detailsScreen(),
+                        );
+                      },
+                      child: Image.network(imageUrl),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    height: 150,
+                    width: 150,
+                    // decoration: BoxDecoration(
+                    //   border: Border.all(
+                    //       width: 0.5,),
+                    // borderRadius: BorderRadius.circular(10),),
+                    child: InkWell(
+                      onTap: () {
+                        navigateTo(
+                          context,
+                          detailsScreen(),
+                        );
+                      },
+                      child: Image.network(imageUrl),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    height: 150,
+                    width: 150,
+                    // decoration: BoxDecoration(
+                    //   border: Border.all(
+                    //       width: 0.5,),
+                    // borderRadius: BorderRadius.circular(10),),
+                    child: InkWell(
+                      onTap: () {
+                        navigateTo(
+                          context,
+                          detailsScreen(),
+                        );
+                      },
+                      child: Image.network(imageUrl),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    height: 150,
+                    width: 150,
+                    // decoration: BoxDecoration(
+                    //   border: Border.all(
+                    //       width: 0.5,),
+                    // borderRadius: BorderRadius.circular(10),),
+                    child: InkWell(
+                      onTap: () {
+                        navigateTo(
+                          context,
+                          detailsScreen(),
+                        );
+                      },
+                      child: Image.network(imageUrl),
+                    ),
+                  ),
+                ]),
+              ),
+            ),
 
-                Container(
-                  height: 150,
-                  width: 150,
-                  // decoration: BoxDecoration(
-                  //   border: Border.all(
-                  //       width: 0.5,),
-                  // borderRadius: BorderRadius.circular(10),),
-                  child: InkWell(
-                    onTap: () {
-                      navigateTo(
-                        context,
-                        detailsScreen(),
-                      );
-                    },
-                    child: Image.network(imageUrl),
-                  ),
+
+            SizedBox(
+              height: 30,
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 50.0,right: 50.0,),
+              child: Container(
+                margin: EdgeInsets.all(5),
+                padding: EdgeInsets.all(4),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.lightBlueAccent,
+                  border: Border.all(
+                      color: Colors.lightBlueAccent, // Set border color
+                      width: 3.0), // Set border width
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(30.0)), // Set rounded corner radius
+                  // Make rounded corner of border
                 ),
-              ]));
+                child: MaterialButton(
+                  onPressed: (){
+                    navigateTo(context, recommendationScreen(),);
+                  }, child:Text( "Recommendations"),
+
+
+                ),
+              ),
+            ),
+
+          ]),
+      ));
   }
 
   Widget _appBarContent(String userName, String profilePictureUrl) {
