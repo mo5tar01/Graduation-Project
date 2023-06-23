@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:travel_recommendation/layout/TravelApp/TravelLayout.dart';
 import 'package:travel_recommendation/modules/Travel_app/register/Profile.dart';
 
 import '../Main/Home_Screen.dart';
@@ -11,11 +10,14 @@ import '../Main/Home_Screen.dart';
 class CategorySlidersPage extends StatefulWidget {
   const CategorySlidersPage({Key? key}) : super(key: key);
 
+
   @override
   _CategorySlidersPageState createState() => _CategorySlidersPageState();
+
 }
 
 class _CategorySlidersPageState extends State<CategorySlidersPage> {
+
   // Define the variables to hold the slider values
   double natureParksValue = 0.0;
   double sightsLandmarksValue = 0.0;
@@ -289,8 +291,7 @@ class _CategorySlidersPageState extends State<CategorySlidersPage> {
       };
 
       // Save the user's preferences to Cloud Firestore
-      await FirebaseFirestore.instance
-          .collection("Categories_rate")
+      await FirebaseFirestore.instance.collection("Categories_rate")
           .doc(userId)
           .set(preferences);
 
@@ -298,7 +299,7 @@ class _CategorySlidersPageState extends State<CategorySlidersPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => TravelLayout(),
+          builder: (BuildContext context) => HomeScreen(),
         ),
       );
     } catch (e) {

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:csv/csv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _header() {
     return Text(
-      'Welcome to my app!',
+      'Start Exploring Now!',
       style: TextStyle(
         color: Colors.white,
         fontSize: 24.0,
@@ -68,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         const SizedBox(height: 5.0),
         Text(
-          'Welcome back to my app.',
+          'Welcome back !',
           style: TextStyle(
             color: Colors.white,
             fontSize: 14.0,
