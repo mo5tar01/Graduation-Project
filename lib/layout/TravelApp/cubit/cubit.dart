@@ -16,7 +16,7 @@ class ShopCubit extends Cubit<ShopStates>{
     HomeScreen(),
     bucketListScreen(),
     recommendationScreen(),
-    SettingScreen(),
+    SettingsScreen(),
   ];
   void changeBottom(int index){
     currentIndex = index;

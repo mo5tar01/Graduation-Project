@@ -135,17 +135,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   children: List.generate(
                     imageUrls.length,
-                        (index) => Container(
-                      height: 150,
-                      width: 150,
-                      child: InkWell(
-                        onTap: () {
-                          navigateTo(
-                            context,
-                            detailsScreen(),
-                          );
-                        },
-                        child: Image.network(imageUrls[index]),
+                        (index) => Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Container(
+                        height: 200,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 10.0,
+                              spreadRadius: 1.0,
+                            ),
+                          ],
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            navigateTo(
+                              context,
+                              detailsScreen(),
+                            );
+                          },
+                          child: Image.network(
+                            imageUrls[index],
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -168,7 +183,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.all(
                     Radius.circular(30.0),
                   ), // Set rounded corner radius
-                  // Make rounded corner of border
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 10.0,
+                      spreadRadius: 1.0,
+                    ),
+                  ],
                 ),
                 child: MaterialButton(
                   onPressed: () {
