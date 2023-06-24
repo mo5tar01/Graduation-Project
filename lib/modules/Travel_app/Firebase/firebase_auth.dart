@@ -19,6 +19,7 @@ class Auth {
       String lastName,
       String phoneNumber,
       File? profilePicture,
+      String? csvFileUrl,
       ) async {
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(

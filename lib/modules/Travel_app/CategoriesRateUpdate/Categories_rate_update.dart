@@ -25,19 +25,24 @@ class _UpdatePreferencesPageState extends State<UpdatePreferencesPage> {
     // Get the current user's ID and assign it to the userId variable
     final currentUser = _auth.currentUser;
     userId = currentUser!.uid;
-  }
 
+    // Initialize currentPreferences with an empty map
+    currentPreferences = {};
+
+    // Load the current preferences
+    loadCurrentPreferences();
+  }
 
   Future<void> loadCurrentPreferences() async {
     try {
       final DocumentSnapshot snapshot = await FirebaseFirestore.instance
           .collection('Categories_rate')
-          .doc(widget.userId)
+          .doc(userId)
           .get();
 
       if (snapshot.exists) {
         setState(() {
-          currentPreferences = snapshot.data() as Map<String, double>;
+          currentPreferences = Map<String, double>.from(snapshot.data() as Map<dynamic, dynamic>);
         });
       } else {
         // User preferences document doesn't exist, initialize with default values
@@ -81,8 +86,8 @@ class _UpdatePreferencesPageState extends State<UpdatePreferencesPage> {
     try {
       await FirebaseFirestore.instance
           .collection('Categories_rate')
-          .doc(widget.userId)
-          .set(currentPreferences);
+          .doc(userId)
+          .update(currentPreferences);
 
       // Show a success message to the user
       ScaffoldMessenger.of(context).showSnackBar(
@@ -105,7 +110,7 @@ class _UpdatePreferencesPageState extends State<UpdatePreferencesPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (currentPreferences == null) {
+    if (currentPreferences.isEmpty) {
       return Scaffold(
         appBar: AppBar(
           title: Text('Update Preferences'),
