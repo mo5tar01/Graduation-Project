@@ -4,8 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:travel_recommendation/Recommendation.dart';
 import '../../../shared/components/components.dart';
 import '../Details/Details_Screen.dart';
+import '../Firebase/firebase_auth.dart';
 import '../recommendations/recommendations_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,10 +20,22 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late User user;
   late DocumentSnapshot userData;
+  List<Recommendation> myrecommedation = [];
+  Future<void> getData() async {
+    List<Recommendation> tmp = await Auth.getDocs();
+
+    tmp.forEach((element) {
+      myrecommedation.add(element);
+      print(element.name);
+    });
+
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
+    getData();
 
     user = FirebaseAuth.instance.currentUser!;
     FirebaseFirestore.instance
@@ -134,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: List.generate(
-                    imageUrls.length,
+                    myrecommedation.length,
                         (index) => Padding(
                       padding: const EdgeInsets.all(3.0),
                       child: Container(
@@ -153,11 +167,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () {
                             navigateTo(
                               context,
-                              detailsScreen(),
+                               detailsScreen(myrecommedation[index]),
                             );
                           },
                           child: Image.network(
-                            imageUrls[index],
+                            myrecommedation[index].ImageURL,
                             fit: BoxFit.cover,
                           ),
                         ),

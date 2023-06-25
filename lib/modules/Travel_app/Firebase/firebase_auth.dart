@@ -5,25 +5,25 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/services.dart';
+import 'package:travel_recommendation/Recommendation.dart';
 
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final DatabaseReference _databaseReference =
-  FirebaseDatabase.instance.reference().child('users');
+      FirebaseDatabase.instance.reference().child('users');
 
   // Sign up the user with their email and password
   Future<User?> signUp(
-      String email,
-      String password,
-      String firstName,
-      String lastName,
-      String phoneNumber,
-      File? profilePicture,
-      String? csvFileUrl,
-      ) async {
+    String email,
+    String password,
+    String firstName,
+    String lastName,
+    String phoneNumber,
+    File? profilePicture,
+  ) async {
     try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential userCredential = await _auth
+          .createUserWithEmailAndPassword(email: email, password: password);
 
       // Get the user's uid
       String uid = userCredential.user!.uid;
@@ -35,25 +35,20 @@ class Auth {
             .FirebaseStorage.instance
             .ref()
             .child('users/$uid/profilePicture');
-        firebase_storage.UploadTask uploadTask = storageRef.putFile(profilePicture);
+        firebase_storage.UploadTask uploadTask =
+            storageRef.putFile(profilePicture);
         await uploadTask.whenComplete(() => null);
         profilePictureUrl = await storageRef.getDownloadURL();
       }
 
-      // Retrieve image URLs from CSV and upload to Firebase Storage
-      String? csvFileUrl;
-      List<String> imageUrls = await getImageUrlsFromCSV();
-      csvFileUrl = await uploadImageUrlsToStorage(uid, imageUrls);
-
-      // Save the user's data to Firestore
-      await FirebaseFirestore.instance.collection('users').doc(uid).set({
+      // Save the user's data to the Realtime Database
+      await _databaseReference.child(uid).set({
         'firstName': firstName,
         'lastName': lastName,
         'email': email,
         'password': password,
         'phoneNumber': phoneNumber,
         'profilePictureUrl': profilePictureUrl,
-        'csvFileUrl': csvFileUrl,
       });
 
       // Return the user object
@@ -65,11 +60,31 @@ class Auth {
   }
 
 
+  static Future<List<Recommendation>> getDocs() async {
+    List<Recommendation> myRecom = [];
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection("Recommendations").get();
+    for (int i = 0; i < querySnapshot.docs.length; i++) {
+
+      var a = querySnapshot.docs[i];
+      Recommendation tmp = new Recommendation(
+          a.get('city'),
+          a.get('country'),
+          a.get('ImageURL'),
+          a.get('name'),
+          a.get('rating'),
+          a.get('description'));
+      myRecom.add(tmp);
+    }
+    return myRecom;
+  }
+
   // Retrieve image URLs from CSV
   Future<List<String>> getImageUrlsFromCSV() async {
     try {
       // Load CSV file from assets
-      String csvString = await rootBundle.loadString('assets/most_rated_attractions.csv');
+      String csvString =
+          await rootBundle.loadString('assets/most_rated_attractions.csv');
 
       // Parse the CSV string
       List<List<dynamic>> csvTable = CsvToListConverter().convert(csvString);
@@ -88,12 +103,14 @@ class Auth {
     }
   }
 
-
   // Upload image URLs to Firebase Storage
-  Future<String> uploadImageUrlsToStorage(String uid, List<String> imageUrls) async {
+  Future<String> uploadImageUrlsToStorage(
+      String uid, List<String> imageUrls) async {
     try {
-      firebase_storage.Reference storageRef =
-      firebase_storage.FirebaseStorage.instance.ref().child('users/$uid/csvFile');
+      firebase_storage.Reference storageRef = firebase_storage
+          .FirebaseStorage.instance
+          .ref()
+          .child('users/$uid/csvFile');
       String csvFilePath = 'user_${uid}_image_urls.csv';
 
       // Create CSV content with image URLs
@@ -117,7 +134,6 @@ class Auth {
       rethrow;
     }
   }
-
 
   // Log in the user with their email and password
   Future<User?> logIn(String email, String password) async {

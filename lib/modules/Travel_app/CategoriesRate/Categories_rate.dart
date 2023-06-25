@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:travel_recommendation/layout/TravelApp/TravelLayout.dart';
 import 'package:travel_recommendation/modules/Travel_app/register/Profile.dart';
 
+import '../Details/Details_Screen.dart';
 import '../Main/Home_Screen.dart';
 
 class CategorySlidersPage extends StatefulWidget {

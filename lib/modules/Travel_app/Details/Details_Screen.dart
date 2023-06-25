@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:travel_recommendation/Recommendation.dart';
 
 class detailsScreen extends StatefulWidget {
-  const detailsScreen({Key? key}) : super(key: key);
+  Recommendation myrecommendation;
+  detailsScreen(this.myrecommendation);
 
   @override
   State<detailsScreen> createState() => _detailsScreenState();
@@ -57,7 +59,7 @@ class _detailsScreenState extends State<detailsScreen> with TickerProviderStateM
               children: <Widget>[
                 AspectRatio(aspectRatio: 1,
                   child: Image.network(
-                      "https://images4.alphacoders.com/168/thumb-1920-168614.jpg",
+                    widget.myrecommendation.ImageURL,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -100,7 +102,7 @@ class _detailsScreenState extends State<detailsScreen> with TickerProviderStateM
                                 top: 32.0, left: 18, right: 16
                             ),
                             child: Text(
-                              "Eiffel Tower",
+                              widget.myrecommendation.name,
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
@@ -122,7 +124,7 @@ class _detailsScreenState extends State<detailsScreen> with TickerProviderStateM
                                   child: Row(
                                     children: <Widget>[
                                       Text(
-                                        "Paris, France",
+                                        widget.myrecommendation.city+", " + widget.myrecommendation.country,
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w200,
@@ -143,7 +145,7 @@ class _detailsScreenState extends State<detailsScreen> with TickerProviderStateM
                                 Container(
                                   child: Row(
                                     children: <Widget>[
-                                      Text("4.3",
+                                      Text(widget.myrecommendation.rating.toString(),
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w200,
@@ -185,7 +187,7 @@ class _detailsScreenState extends State<detailsScreen> with TickerProviderStateM
                                 left: 16, right: 16, top: 8, bottom: 8,
                               ),
                               child: Text(
-                                'Eiffel Tower is one of the world 7 wonders and one of the most visited places in the world',
+                                widget.myrecommendation.description,
                                 textAlign: TextAlign.justify,
                                 style: TextStyle(
                                   fontWeight: FontWeight.w200,
