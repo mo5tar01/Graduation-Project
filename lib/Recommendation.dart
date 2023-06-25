@@ -3,7 +3,7 @@ class Recommendation {
   String country;
   String ImageURL;
   String name;
-  int rating;
+  num? rating;
   String description;
   Recommendation(this.city, this.country, this.ImageURL, this.name, this.rating,
       this.description);

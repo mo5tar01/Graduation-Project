@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:travel_recommendation/Recommendation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class detailsScreen extends StatefulWidget {
   Recommendation myrecommendation;
@@ -18,8 +21,28 @@ class _detailsScreenState extends State<detailsScreen> with TickerProviderStateM
   double opacity2=0.0;
   double opacity3=0.0;
   var feedbackController= TextEditingController();
+  late User user;
+  late DocumentSnapshot userData;
   @override
   void initState(){
+    super.initState();
+
+    user = FirebaseAuth.instance.currentUser!;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get()
+        .then((document) {
+      if (document.exists) {
+        setState(() {
+          userData = document;
+        });
+      }
+    }).onError((error, stackTrace) {
+      print('Error retrieving document: $error');
+      print('Stack trace: $stackTrace');
+    });
+
     animationController = AnimationController(
         duration: const Duration(milliseconds: 1000),vsync: this
     );
@@ -241,15 +264,7 @@ class _detailsScreenState extends State<detailsScreen> with TickerProviderStateM
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: <Widget>[
                                       GestureDetector(
-                                        onTap:(){
-                                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                            content: Text(
-                                              "Your Destination Saving.........",
-                                              style: TextStyle(fontSize: 16),
-                                            ),
-                                          )
-                                          );
-                                        },
+                                        onTap: saveDetailsToDatabase, // Call the function when the button is pressed
                                         child: Container(
                                           width: 48,
                                           height: 48,
@@ -259,8 +274,7 @@ class _detailsScreenState extends State<detailsScreen> with TickerProviderStateM
                                               borderRadius: const BorderRadius.all(
                                                 Radius.circular(12.0),
                                               ),
-                                              border: Border.all(
-                                                  color:Color(0xFF3A5160).withOpacity(0.2)),
+                                              border: Border.all(color: Color(0xFF3A5160).withOpacity(0.2)),
                                             ),
                                             child: Icon(
                                               Icons.add,
@@ -388,4 +402,55 @@ class _detailsScreenState extends State<detailsScreen> with TickerProviderStateM
       ),
     );
   }
+  void saveDetailsToDatabase() async {
+
+    try {
+      // Get the current user ID (you can replace this with your own logic to get the user ID)
+      String userId = user.uid;
+
+      // Create a reference to the user's document in Firestore
+      DocumentReference userRef =
+      FirebaseFirestore.instance.collection('users').doc(userId);
+
+      // Get the existing details array from the user's document
+      DocumentSnapshot<Map<String, dynamic>> userSnapshot =
+      await userRef.get() as DocumentSnapshot<Map<String, dynamic>>;
+      List<dynamic>? existingDetails =
+          userSnapshot.data()?['details']?.cast<dynamic>() ?? [];
+
+
+      // Create a new detail object using the destination details
+      Map<String, dynamic> newDetail = {
+        'name': widget.myrecommendation.name,
+        'city': widget.myrecommendation.city,
+        'country': widget.myrecommendation.country,
+        'imageURL': widget.myrecommendation.ImageURL,
+        'rating': widget.myrecommendation.rating,
+        'description': widget.myrecommendation.description,
+      };
+
+      // Add the new detail to the existing array
+      existingDetails!.add(newDetail);
+
+      // Update the details array in the user's document
+      await userRef.update({'details': existingDetails});
+
+      // Show a success message
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          'Destination added to your list.',
+          style: TextStyle(fontSize: 16),
+        ),
+      ));
+    } catch (error) {
+      // Show an error message
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          'Failed to add destination.',
+          style: TextStyle(fontSize: 16),
+        ),
+      ));
+    }
+  }
+
 }
