@@ -403,7 +403,6 @@ class _detailsScreenState extends State<detailsScreen> with TickerProviderStateM
     );
   }
   void saveDetailsToDatabase() async {
-
     try {
       // Get the current user ID (you can replace this with your own logic to get the user ID)
       String userId = user.uid;
@@ -412,15 +411,14 @@ class _detailsScreenState extends State<detailsScreen> with TickerProviderStateM
       DocumentReference userRef =
       FirebaseFirestore.instance.collection('users').doc(userId);
 
-      // Get the existing details array from the user's document
+      // Get the existing bucket list array from the user's document
       DocumentSnapshot<Map<String, dynamic>> userSnapshot =
       await userRef.get() as DocumentSnapshot<Map<String, dynamic>>;
-      List<dynamic>? existingDetails =
-          userSnapshot.data()?['details']?.cast<dynamic>() ?? [];
+      List<dynamic>? existingBucketList =
+          userSnapshot.data()?['bucketList']?.cast<dynamic>() ?? [];
 
-
-      // Create a new detail object using the destination details
-      Map<String, dynamic> newDetail = {
+      // Create a new bucket list item using the destination details
+      Map<String, dynamic> newBucketListItem = {
         'name': widget.myrecommendation.name,
         'city': widget.myrecommendation.city,
         'country': widget.myrecommendation.country,
@@ -429,16 +427,16 @@ class _detailsScreenState extends State<detailsScreen> with TickerProviderStateM
         'description': widget.myrecommendation.description,
       };
 
-      // Add the new detail to the existing array
-      existingDetails!.add(newDetail);
+      // Add the new bucket list item to the existing array
+      existingBucketList!.add(newBucketListItem);
 
-      // Update the details array in the user's document
-      await userRef.update({'details': existingDetails});
+      // Update the bucket list array in the user's document
+      await userRef.update({'bucketList': existingBucketList});
 
       // Show a success message
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-          'Destination added to your list.',
+          'Destination added to your bucket list.',
           style: TextStyle(fontSize: 16),
         ),
       ));
@@ -446,11 +444,12 @@ class _detailsScreenState extends State<detailsScreen> with TickerProviderStateM
       // Show an error message
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-          'Failed to add destination.',
+          'Failed to add destination to bucket list.',
           style: TextStyle(fontSize: 16),
         ),
       ));
     }
   }
+
 
 }

@@ -6,6 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/services.dart';
 import 'package:travel_recommendation/Recommendation.dart';
+import 'package:travel_recommendation/models/shop_app/login_model.dart';
 
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -134,6 +135,34 @@ class Auth {
       rethrow;
     }
   }
+  Future<List?> fetchBucketList() async {
+    try {
+      // Get the current user ID (you can replace this with your own logic to get the user ID)
+
+        User? user = FirebaseAuth.instance.currentUser;
+        String userId = user?.uid ?? ''; // Get the user ID or an empty string if the user is not authenticated
+
+
+      // Create a reference to the user's document in Firestore
+      DocumentReference userRef = FirebaseFirestore.instance.collection('users').doc(userId);
+
+      // Get the user's document snapshot
+      DocumentSnapshot<Map<String, dynamic>> userSnapshot =
+      await userRef.get() as DocumentSnapshot<Map<String, dynamic>>;
+
+      // Get the bucketList array from the user's document
+      List<dynamic>? bucketList =
+          userSnapshot.data()?['bucketList']?.cast<dynamic>() ?? [];
+
+      // Return the bucketList array
+      return bucketList;
+    } catch (error) {
+      // Handle the error here (e.g., show an error message)
+      print('Failed to fetch bucket list: $error');
+      return [];
+    }
+  }
+
 
   // Log in the user with their email and password
   Future<User?> logIn(String email, String password) async {
