@@ -12,6 +12,7 @@ class Attractions {
   num? rawRanking;
 
   Attractions(this.cityAddress, this.CountryAddress, this.Image, this.Name, this.RATING,this.numReviews,
-      this.rankingDenomirator,this.rankingPosition,this.rawRanking,this.subCategory,this.subType
+      this.rankingDenomirator,this.rankingPosition,this.rawRanking,this.subCategory,this.subType,
      );
+
 }

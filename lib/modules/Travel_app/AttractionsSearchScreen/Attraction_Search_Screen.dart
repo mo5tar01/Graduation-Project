@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../Attractions.dart';
 import '../../../shared/components/components.dart';
 import '../Details/Details_Screen.dart';
+import '../DetailsAtt/DetailsAtt_Screen.dart';
 import '../Firebase/firebase_auth.dart';
 
 class AttractionsSearchScreen extends StatefulWidget {
@@ -39,6 +40,24 @@ class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
       print('Error retrieving data: $error');
     }
   }
+  void goto(  String cityAddress,
+  String CountryAddress,
+  String Image,
+  String Name,
+  String subCategory,
+  String subType,
+  num? RATING,
+  num? numReviews,
+  num? rankingDenomirator,
+  num? rankingPosition,
+  num? rawRanking){
+    Attractions ayy = new Attractions(cityAddress, CountryAddress, Image, Name, RATING, numReviews, rankingDenomirator, rankingPosition, rawRanking, subCategory, subType);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+        detailsAttractionsScreen(ayy),
+    ));  }
 
   @override
   void dispose() {
@@ -116,11 +135,25 @@ class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
                       itemBuilder: (context, index) {
                         Map<String, dynamic> attractionData =
                         attractions[index].data() as Map<String, dynamic>;
+                        // Attractions temp = attractions[index].data() as Attractions;
+                        // print(temp.toString());
                         // Build your UI for each attraction item
                         // Example: Text(attractionData['Name'])
                         return GestureDetector(
                           onTap: () {
-
+                            goto(
+                              attractionData['cityAddress'],
+                              attractionData['CountryAddress'],
+                              attractionData['Image'],
+                              attractionData['Name'],
+                              attractionData['subCategory'],
+                              attractionData['subType'],
+                              attractionData['RATING'],
+                              attractionData['numReviews'],
+                              attractionData['rankingDenomirator'],
+                              attractionData['rankingPosition'],
+                              attractionData['rawRanking'],
+                            );
                           },
                           child: Column(
                             children: [
@@ -196,3 +229,4 @@ class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
     );
   }
 }
+

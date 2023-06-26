@@ -8,7 +8,7 @@ import '../../../Attractions.dart';
 
 
 class detailsAttractionsScreen extends StatefulWidget {
-  Attractions myattractions;
+  final Attractions myattractions;
   detailsAttractionsScreen(this.myattractions);
 
   @override
