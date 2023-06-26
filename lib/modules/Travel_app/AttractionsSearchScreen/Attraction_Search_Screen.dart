@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../../Attractions.dart';
+import '../../../shared/components/components.dart';
+import '../Details/Details_Screen.dart';
+import '../Firebase/firebase_auth.dart';
+
 class AttractionsSearchScreen extends StatefulWidget {
   const AttractionsSearchScreen({Key? key}) : super(key: key);
 
@@ -11,11 +16,28 @@ class AttractionsSearchScreen extends StatefulWidget {
 class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
   late TextEditingController _searchController;
   late Stream<QuerySnapshot> _searchResultsStream = Stream<QuerySnapshot>.empty();
-
+  List<Attractions> myattractions = [];
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController();
+
+  }
+  Future<void> getData() async {
+    try {
+      List<Attractions> tmp = await Auth.getDocs2();
+
+      setState(() {
+        myattractions.addAll(tmp);
+      });
+
+      // Print the retrieved recommendations for debugging
+      myattractions.forEach((element) {
+        print(element.Name);
+      });
+    } catch (error) {
+      print('Error retrieving data: $error');
+    }
   }
 
   @override
@@ -96,11 +118,68 @@ class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
                         attractions[index].data() as Map<String, dynamic>;
                         // Build your UI for each attraction item
                         // Example: Text(attractionData['Name'])
-                        return ListTile(
-                          title: Text(attractionData['Name']),
-                          subtitle: Text(attractionData['cityAddress']),
-                          // Customize the displayed fields according to your needs
+                        return GestureDetector(
+                          onTap: () {
+
+                          },
+                          child: Column(
+                            children: [
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 150,
+                                      width: 150,
+                                      child: Image.network(attractionData['Image']),
+                                    ),
+                                    SizedBox(
+                                      width: 60.0,
+                                    ),
+                                    Center(
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            attractionData['Name'],
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20.0,
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            attractionData['CountryAddress'],
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 15.0,
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+                                          Divider(
+                                            color: Colors.blue,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                color: Colors.black,
+                              ),
+                            ],
+                          ),
                         );
+
+                        // return ListTile(
+                        //   title: Text(attractionData['Name']),
+                        //   subtitle: Text(attractionData['cityAddress']),
+                        //
+                        //   // Customize the displayed fields according to your needs
+                        // );
                       },
                     );
                   }

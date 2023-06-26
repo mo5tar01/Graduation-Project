@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/services.dart';
+import 'package:travel_recommendation/Attractions.dart';
 import 'package:travel_recommendation/Recommendation.dart';
 import 'package:travel_recommendation/models/shop_app/login_model.dart';
 
@@ -79,6 +80,31 @@ class Auth {
     }
     return myRecom;
   }
+  static Future<List<Attractions>> getDocs2() async {
+    List<Attractions> myAtt = [];
+    QuerySnapshot querySnapshot =
+    await FirebaseFirestore.instance.collection("Attractions").get();
+    for (int i = 0; i < querySnapshot.docs.length; i++) {
+
+      var a = querySnapshot.docs[i];
+      Attractions tmp = new Attractions(
+          a.get('cityAddress'),
+          a.get('CountryAddress'),
+          a.get('Image'),
+          a.get('Name'),
+          a.get('subCategory'),
+          a.get('subType'),
+          a.get('RATING'),
+          a.get('numReviews'),
+          a.get('rankingDenomirator'),
+          a.get('rankingPosition'),
+          a.get('rawRanking'),
+      );
+      myAtt.add(tmp);
+    }
+    return myAtt;
+  }
+
 
   // Retrieve image URLs from CSV
   Future<List<String>> getImageUrlsFromCSV() async {
