@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:travel_recommendation/Recommendation.dart';
+import 'package:travel_recommendation/modules/Travel_app/AttractionsSearchScreen/Attraction_Search_Screen.dart';
 import '../../../shared/components/components.dart';
 import '../Details/Details_Screen.dart';
 import '../Firebase/firebase_auth.dart';
@@ -182,15 +183,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 left: 40.0,
                 right: 40.0,
               ),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
+              child:ElevatedButton(
+                onPressed: () {
+                  navigateTo(context, AttractionsSearchScreen());
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Icon(Icons.search),
+                      SizedBox(width: 10),
+                      Text('Search'),
+                    ],
+                  ),
+                ),
               ),
+
             ),
             SizedBox(height: 30),
             Padding(

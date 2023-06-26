@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
             darkTheme: darkTheme,
             home: Directionality(
               textDirection: TextDirection.ltr,
-              child: AttractionsSearchScreen(),
+              child: OnBoardingScreen(),
             ),
           );
         },
