@@ -11,6 +11,7 @@ import 'package:travel_recommendation/shared/styles/themes.dart';
 import 'package:flutter/widgets.dart';
 import 'layout/TravelApp/cubit/cubit.dart';
 import 'layout/TravelApp/cubit/states.dart';
+import 'modules/Travel_app/AttractionsSearchScreen/Attraction_Search_Screen.dart';
 import 'modules/Travel_app/on_boarding/on_boarding_screen.dart';
 
 void main() async {
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
             darkTheme: darkTheme,
             home: Directionality(
               textDirection: TextDirection.ltr,
-              child: OnBoardingScreen(),
+              child: AttractionsSearchScreen(),
             ),
           );
         },

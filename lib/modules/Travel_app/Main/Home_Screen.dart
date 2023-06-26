@@ -9,7 +9,9 @@ import '../../../shared/components/components.dart';
 import '../Details/Details_Screen.dart';
 import '../Firebase/firebase_auth.dart';
 import '../recommendations/recommendations_screen.dart';
-
+import 'package:csv/csv.dart';
+import 'dart:async' show Future;
+import 'package:flutter/services.dart' show rootBundle;
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -45,6 +47,52 @@ class _HomeScreenState extends State<HomeScreen> {
       print('Error retrieving data: $error');
     }
   }
+  // void Exportdata()async{
+  //   final CollectionReference AllPlaces=FirebaseFirestore.instance.collection("attractions");
+  //   final attData=await rootBundle.loadString("assets/filtered_attractions.csv");
+  //   List<List<dynamic>> csvTable=CsvToListConverter().convert(attData);
+  //   List<List<dynamic>> data=[];
+  //   data=csvTable;
+  //   for(var i=0; i< data.length;i++){
+  //     var record = {
+  //       "cityAddress": data[i][0],
+  //       "CountryAddress": data[i][1],
+  //       "Image": data[i][2],
+  //       "Name": data[i][3],
+  //       "numReview": data[i][4],
+  //       "rankingDenomirator": data[i][5],
+  //       "rankingPosition": data[i][6],
+  //       "RATING": data[i][7],
+  //       "rawRanking": data[i][8],
+  //       "subCategory": data[i][9],
+  //       "subType": data[i][10],
+  //     };
+  //     AllPlaces.add(record);
+  //   }
+  // }
+  void exportData() async {
+    final CollectionReference allPlaces = FirebaseFirestore.instance.collection("attractions");
+    final attData = await rootBundle.loadString("assets/filtered_attractions.csv");
+    List<List<dynamic>> csvTable = CsvToListConverter().convert(attData);
+    // List<List<dynamic>> data = csvTable;
+    // for (var i = 0; i < data.length; i++) {
+    //   var record = {
+    //     "cityAddress": data[i][0],
+    //     "CountryAddress": data[i][1],
+    //     "Image": data[i][2],
+    //     "Name": data[i][3],
+    //     "numReview": data[i][4],
+    //     "rankingDenominator": data[i][5],
+    //     "rankingPosition": data[i][6],
+    //     "RATING": data[i][7],
+    //     "rawRanking": data[i][8],
+    //     "subCategory": data[i][9],
+    //     "subType": data[i][10],
+    //   };
+    //   await allPlaces.add(record);
+    // }
+  }
+
 
   @override
   void initState() {
@@ -212,6 +260,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: MaterialButton(
                   onPressed: () {
                     navigateTo(context, recommendationScreen());
+
                   },
                   child: Text("Recommendations"),
                 ),
@@ -222,7 +271,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
   Widget _appBarContent(String userName, String profilePictureUrl) {
     return Container(
       height: 180,
