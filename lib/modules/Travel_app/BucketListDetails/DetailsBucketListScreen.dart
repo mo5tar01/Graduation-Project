@@ -1,24 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:travel_recommendation/Recommendation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+class BucketListDetailsScreen extends StatefulWidget {
+  final Map<String, dynamic> bucketItem;
 
-import '../../../Attractions.dart';
-
-
-class detailsAttractionsScreen extends StatefulWidget {
-  final Attractions myattractions;
-  detailsAttractionsScreen(this.myattractions);
+  BucketListDetailsScreen({required this.bucketItem});
 
   @override
-  State<detailsAttractionsScreen> createState() => _detailsAttractionsScreenState();
+  _BucketListDetailsScreenState createState() => _BucketListDetailsScreenState();
 }
 
-class _detailsAttractionsScreenState extends State<detailsAttractionsScreen> with TickerProviderStateMixin{
+class _BucketListDetailsScreenState extends State<BucketListDetailsScreen> with TickerProviderStateMixin {
   final double infoHeight = 364.0;
-  AnimationController? animationController;
-  Animation<double>? animation;
+  late AnimationController animationController;
+  late Animation<double> animation;
   double opacity1=0.0;
   double opacity2=0.0;
   double opacity3=0.0;
@@ -84,7 +81,7 @@ class _detailsAttractionsScreenState extends State<detailsAttractionsScreen> wit
               children: <Widget>[
                 AspectRatio(aspectRatio: 1,
                   child: Image.network(
-                    widget.myattractions.Image,
+                    widget.bucketItem['imageURL'],
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -127,7 +124,7 @@ class _detailsAttractionsScreenState extends State<detailsAttractionsScreen> wit
                                 top: 32.0, left: 18, right: 16
                             ),
                             child: Text(
-                              widget.myattractions.Name,
+                              widget.bucketItem['name'],
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
@@ -149,7 +146,7 @@ class _detailsAttractionsScreenState extends State<detailsAttractionsScreen> wit
                                   child: Row(
                                     children: <Widget>[
                                       Text(
-                                        widget.myattractions.cityAddress+", " + widget.myattractions.CountryAddress,
+                                        widget.bucketItem['city']+", " + widget.bucketItem['country'],
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w200,
@@ -170,7 +167,7 @@ class _detailsAttractionsScreenState extends State<detailsAttractionsScreen> wit
                                 Container(
                                   child: Row(
                                     children: <Widget>[
-                                      Text(widget.myattractions.RATING.toString(),
+                                      Text(widget.bucketItem['rating'].toString(),
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w200,
@@ -212,7 +209,7 @@ class _detailsAttractionsScreenState extends State<detailsAttractionsScreen> wit
                                 left: 16, right: 16, top: 8, bottom: 8,
                               ),
                               child: Text(
-                               " ",
+                                widget.bucketItem['description'],
                                 textAlign: TextAlign.justify,
                                 style: TextStyle(
                                   fontWeight: FontWeight.w200,
@@ -421,13 +418,12 @@ class _detailsAttractionsScreenState extends State<detailsAttractionsScreen> wit
 
       // Create a new bucket list item using the destination details
       Map<String, dynamic> newBucketListItem = {
-        'name': widget.myattractions.Name,
-        'city': widget.myattractions.cityAddress,
-        'country': widget.myattractions.CountryAddress,
-        'imageURL': widget.myattractions.Image,
-        'rating': widget.myattractions.RATING,
-        'description':" ",
-
+        'name': widget.bucketItem['rating'],
+        'city': widget.bucketItem['city'],
+        'country': widget.bucketItem['country'],
+        'imageURL': widget.bucketItem['imageURL'],
+        'rating': widget.bucketItem['rating'],
+        'description': widget.bucketItem['description'],
       };
 
       // Add the new bucket list item to the existing array

@@ -301,7 +301,7 @@ class _CategorySlidersPageState extends State<CategorySlidersPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => HomeScreen(),
+          builder: (BuildContext context) => TravelLayout(),
         ),
       );
     } catch (e) {

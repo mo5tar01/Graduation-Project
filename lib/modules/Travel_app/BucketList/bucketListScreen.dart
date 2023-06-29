@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../shared/components/components.dart';
+import '../BucketListDetails/DetailsBucketListScreen.dart';
 import '../recommendations/recommendations_screen.dart';
 
 class BucketListScreen extends StatefulWidget {
@@ -59,7 +60,7 @@ class _BucketListScreenState extends State<BucketListScreen> {
 
                       return GestureDetector(
                         onTap: () {
-                          navigateTo(context, recommendationScreen());
+                          navigateTo(context, BucketListDetailsScreen(bucketItem: item));
                         },
                         child: Column(
                           children: [
