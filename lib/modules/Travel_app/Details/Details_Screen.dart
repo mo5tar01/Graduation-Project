@@ -277,8 +277,7 @@ class _detailsScreenState extends State<detailsScreen> with TickerProviderStateM
                                               border: Border.all(color: Color(0xFF3A5160).withOpacity(0.2)),
                                             ),
                                             child: Icon(
-                                              Icons.add,
-                                              color: Color(0xFF132342),
+                                                Icons.favorite_border,                                              color: Color(0xFF132342),
                                               size: 28,
                                             ),
                                           ),

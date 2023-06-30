@@ -149,8 +149,8 @@ class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
                               attractionData['subCategory'],
                               attractionData['subType'],
                               attractionData['RATING'],
-                              attractionData['numReviews'],
-                              attractionData['rankingDenomirator'],
+                              attractionData['numReview'],
+                              attractionData['rankingDenominator'],
                               attractionData['rankingPosition'],
                               attractionData['rawRanking'],
                             );

@@ -192,12 +192,15 @@ class _BucketListDetailsScreenState extends State<BucketListDetailsScreen> with 
                             duration: const Duration(milliseconds: 500,),
                             child: Padding(
                               padding: const EdgeInsets.all(8),
-                              child: Row(
-                                children: <Widget>[
-                                  getTimeBoxUI('24','Visits'),
-                                  getTimeBoxUI('Middle Of ','The City'),
-                                  getTimeBoxUI('25 ','Activities'),
-                                ],
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: <Widget>[
+                                    getTimeBoxUI(widget.bucketItem['numReview'].toString(),'Reviews'),
+                                    getTimeBoxUI(widget.bucketItem['subType'],'Category'),
+                                    getTimeBoxUI(widget.bucketItem['rankingPosition'].toString(),'Ranking Position'),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -276,8 +279,7 @@ class _BucketListDetailsScreenState extends State<BucketListDetailsScreen> with 
                                               border: Border.all(color: Color(0xFF3A5160).withOpacity(0.2)),
                                             ),
                                             child: Icon(
-                                              Icons.add,
-                                              color: Color(0xFF132342),
+                                                Icons.favorite_border,                                              color: Color(0xFF132342),
                                               size: 28,
                                             ),
                                           ),
@@ -426,6 +428,10 @@ class _BucketListDetailsScreenState extends State<BucketListDetailsScreen> with 
         'description': widget.bucketItem['description'],
         'subCategory': widget.bucketItem['subCategory'],
         'subType': widget.bucketItem['subType'],
+        'rawRanking': widget.bucketItem['rawRanking'],
+        'rankingDenominator': widget.bucketItem['rankingDenominator'],
+        'rankingPosition': widget.bucketItem['rankingPosition'],
+        'numReviews': widget.bucketItem['numReviews'],
       };
 
       // Add the new bucket list item to the existing array
