@@ -427,6 +427,8 @@ class _detailsAttractionsScreenState extends State<detailsAttractionsScreen> wit
         'imageURL': widget.myattractions.Image,
         'rating': widget.myattractions.RATING,
         'description':" ",
+        'subCategory': widget.myattractions.subCategory,
+        'subType': widget.myattractions.subType,
 
       };
 

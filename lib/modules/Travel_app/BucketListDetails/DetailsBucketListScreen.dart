@@ -424,6 +424,8 @@ class _BucketListDetailsScreenState extends State<BucketListDetailsScreen> with 
         'imageURL': widget.bucketItem['imageURL'],
         'rating': widget.bucketItem['rating'],
         'description': widget.bucketItem['description'],
+        'subCategory': widget.bucketItem['subCategory'],
+        'subType': widget.bucketItem['subType'],
       };
 
       // Add the new bucket list item to the existing array
