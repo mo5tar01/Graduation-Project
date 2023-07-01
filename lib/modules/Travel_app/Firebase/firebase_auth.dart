@@ -75,7 +75,15 @@ class Auth {
           a.get('ImageURL'),
           a.get('name'),
           a.get('rating'),
-          a.get('description'));
+          a.get('description'),
+          // a.get('rankingDenomirator'),
+          a.get('rankingPosition'),
+          a.get('numReviews'),
+          a.get('rawRanking'),
+          a.get('subCategory'),
+          a.get('subType')
+      );
+
       myRecom.add(tmp);
     }
     return myRecom;
