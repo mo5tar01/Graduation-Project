@@ -51,6 +51,8 @@ dependencies:
   file_picker: ^5.3.2
   csv: ^5.0.2
   http: ^0.13.4
+  source_gen: ^1.0.0
+  build_runner: ^2.0.0
 
 
 

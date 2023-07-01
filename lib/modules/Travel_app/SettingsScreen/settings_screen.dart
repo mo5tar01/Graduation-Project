@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:travel_recommendation/modules/Travel_app/Main/Home_Screen.dart';
+import 'package:travel_recommendation/modules/Travel_app/login/travel_login_screen.dart';
 import '../../../shared/components/components.dart';
 import '../CategoriesRateUpdate/Categories_rate_update.dart';
 import '../Details/Details_Screen.dart';
@@ -88,9 +89,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     navigateTo(context, UpdatePreferencesPage(userId: '',));
     // TODO: Implement navigation to Edit Preferences page
   }
+  bool isDark = false;
+  ThemeMode appMode = ThemeMode.dark;
 
-  void _navigateToLanguageSettings() {
-    // TODO: Implement navigation to Language Settings page
+
+  void _navigateToThemeSettings() {
+    isDark = !isDark;
+// TODO: Implement navigation to Language Settings page
   }
 
   void _navigateToAboutPage() {
@@ -98,7 +103,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _signOut() {
-    // TODO: Implement sign-out functionality
+    navigateAndFinish(context, TravelLoginScreen());
   }
 
   @override
@@ -128,9 +133,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             const SizedBox(height: 10),
             _buildNavigationItem(
-              'Language',
-              Icons.language,
-              _navigateToLanguageSettings,
+              'Theme',
+              Icons.brightness_4_outlined,
+              _navigateToThemeSettings,
             ),
             const SizedBox(height: 10),
             _buildNavigationItem(

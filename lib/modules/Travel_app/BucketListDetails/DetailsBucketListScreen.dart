@@ -420,7 +420,7 @@ class _BucketListDetailsScreenState extends State<BucketListDetailsScreen> with 
 
       // Create a new bucket list item using the destination details
       Map<String, dynamic> newBucketListItem = {
-        'name': widget.bucketItem['rating'],
+        'name': widget.bucketItem['name'],
         'city': widget.bucketItem['city'],
         'country': widget.bucketItem['country'],
         'imageURL': widget.bucketItem['imageURL'],

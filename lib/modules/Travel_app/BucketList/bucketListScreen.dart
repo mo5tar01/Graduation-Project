@@ -58,6 +58,7 @@ class _BucketListScreenState extends State<BucketListScreen> {
                       String name = item['name'];
                       String country = item['country'];
 
+
                       return GestureDetector(
                         onTap: () {
                           navigateTo(context, BucketListDetailsScreen(bucketItem: item));

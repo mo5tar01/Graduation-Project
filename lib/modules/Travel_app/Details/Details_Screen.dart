@@ -193,12 +193,15 @@ class _detailsScreenState extends State<detailsScreen> with TickerProviderStateM
                             duration: const Duration(milliseconds: 500,),
                             child: Padding(
                               padding: const EdgeInsets.all(8),
-                              child: Row(
-                                children: <Widget>[
-                                  getTimeBoxUI('24','Visits'),
-                                  getTimeBoxUI('Middle Of ','The City'),
-                                  getTimeBoxUI('25 ','Activities'),
-                                ],
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: <Widget>[
+                                    getTimeBoxUI('205','Reviews'),
+                                    getTimeBoxUI('Fun & Games','Category'),
+                                    getTimeBoxUI('15','Ranking Position'),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -424,6 +427,12 @@ class _detailsScreenState extends State<detailsScreen> with TickerProviderStateM
         'imageURL': widget.myrecommendation.ImageURL,
         'rating': widget.myrecommendation.rating,
         'description': widget.myrecommendation.description,
+        'numReview': '205 ',
+        'rankingDenominator': '169',
+        'rankingPosition': '15',
+        'rawRanking': '3.238952637',
+        'subCategory': 'Fun & Games',
+        'subType': 'Game & Entertainment Centers',
       };
 
       // Add the new bucket list item to the existing array
