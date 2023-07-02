@@ -57,6 +57,7 @@ dependencies:
 
 
 
+
   firebase_core: ^2.14.0
   firebase_auth: ^4.6.3
   firebase_database: ^10.2.3
@@ -91,6 +92,7 @@ flutter:
     - images/
     - assets/most_rated_attractions.csv
     - assets/filtered_attractions.csv
+    - assets/trial.json
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

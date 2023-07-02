@@ -18,12 +18,21 @@ class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
   late TextEditingController _searchController;
   late Stream<QuerySnapshot> _searchResultsStream = Stream<QuerySnapshot>.empty();
   List<Attractions> myattractions = [];
+  List<String> categories = ['Tours', 'Museums', 'Shopping',
+    'Food & Drink', 'Sights & Landmarks','Traveler Resources',
+    'Nature & Parks', 'Events','Fun & Games',
+    'Casinos & Gambling', 'Classes & Workshops','Concerts & Shows',
+    'Nightlife','Other','Outdoor Activities',
+    'Spas & Wellness','Transportation','Water & Amusement Parks',
+    'Zoos & Aquariums'];
+  String selectedCategory = '';
+
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController();
-
   }
+
   Future<void> getData() async {
     try {
       List<Attractions> tmp = await Auth.getDocs2();
@@ -40,24 +49,36 @@ class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
       print('Error retrieving data: $error');
     }
   }
-  void goto(  String cityAddress,
-  String CountryAddress,
-  String Image,
-  String Name,
-  String subCategory,
-  String subType,
-  num? RATING,
-  num? numReviews,
-  num? rankingDenomirator,
-  num? rankingPosition,
-  num? rawRanking){
-    Attractions ayy = new Attractions(cityAddress, CountryAddress, Image, Name, RATING, numReviews, rankingDenomirator, rankingPosition, rawRanking, subCategory, subType);
+
+  void goto(
+      String cityAddress,
+      String CountryAddress,
+      String Image,
+      String Name,
+      String subCategory,
+      String subType,
+      num? RATING,
+      num? numReviews,
+      num? rankingDenomirator,
+      num? rankingPosition,
+      num? rawRanking) {
+    Attractions ayy = new Attractions(
+        cityAddress,
+        CountryAddress,
+        Image,
+        Name,
+        RATING,
+        numReviews,
+        rankingDenomirator,
+        rankingPosition,
+        rawRanking,
+        subCategory,
+        subType);
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) =>
-        detailsAttractionsScreen(ayy),
-    ));  }
+      MaterialPageRoute(builder: (context) => detailsAttractionsScreen(ayy)),
+    );
+  }
 
   @override
   void dispose() {
@@ -69,13 +90,25 @@ class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
     setState(() {
       _searchResultsStream = FirebaseFirestore.instance
           .collection('attractions')
-          .where('Name', isEqualTo: query)
+          .where('Name', isGreaterThanOrEqualTo: query)
+          .orderBy('Name')
           .get()
           .then<QuerySnapshot>((snapshot) {
         if (snapshot.docs.isEmpty) {
           return FirebaseFirestore.instance
               .collection('attractions')
-              .where('cityAddress', isEqualTo: query)
+              .where('cityAddress', isGreaterThanOrEqualTo: query)
+              .orderBy('cityAddress')
+              .get();
+        } else {
+          return Future.value(snapshot);
+        }
+      })
+          .then<QuerySnapshot>((snapshot) {
+        if (snapshot.docs.isEmpty) {
+          return FirebaseFirestore.instance
+              .collection('attractions')
+              .where('subCategory', isEqualTo: selectedCategory)
               .get();
         } else {
           return Future.value(snapshot);
@@ -85,6 +118,12 @@ class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
     });
   }
 
+  void selectCategory(String category) {
+    setState(() {
+      selectedCategory = category;
+    });
+    searchInFirestore(category);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,14 +137,45 @@ class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
           children: [
             TextField(
               controller: _searchController,
+              textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(
                 hintText: 'Search...',
                 suffixIcon: IconButton(
                   icon: Icon(Icons.search),
-                  onPressed: () {
+                  onPressed: () async {
                     searchInFirestore(_searchController.text);
+                    int count = await getDocumentCount();
+                    print('Document count: $count');
+
                   },
                 ),
+              ),
+              onChanged: (value) {
+                _searchController.value = _searchController.value.copyWith(
+                  text: value.capitalizeFirstLetter(),
+                  selection: TextSelection.collapsed(offset: value.length),
+                );
+              },
+            ),
+            SizedBox(height: 16.0),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: categories.map((category) {
+                  return Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        selectCategory(category);
+                      },
+                      child: Text(category),
+                      style: ElevatedButton.styleFrom(
+                        primary: selectedCategory == category ? Colors.blueGrey : null,
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
             ),
             Expanded(
@@ -134,11 +204,9 @@ class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
                       itemCount: attractions.length,
                       itemBuilder: (context, index) {
                         Map<String, dynamic> attractionData =
-                        attractions[index].data() as Map<String, dynamic>;
-                        // Attractions temp = attractions[index].data() as Attractions;
-                        // print(temp.toString());
-                        // Build your UI for each attraction item
-                        // Example: Text(attractionData['Name'])
+                        attractions[index].data()
+                        as Map<String, dynamic>;
+
                         return GestureDetector(
                           onTap: () {
                             goto(
@@ -164,7 +232,8 @@ class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
                                     Container(
                                       height: 150,
                                       width: 150,
-                                      child: Image.network(attractionData['Image']),
+                                      child: Image.network(
+                                          attractionData['Image']),
                                     ),
                                     SizedBox(
                                       width: 60.0,
@@ -206,13 +275,6 @@ class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
                             ],
                           ),
                         );
-
-                        // return ListTile(
-                        //   title: Text(attractionData['Name']),
-                        //   subtitle: Text(attractionData['cityAddress']),
-                        //
-                        //   // Customize the displayed fields according to your needs
-                        // );
                       },
                     );
                   }
@@ -226,7 +288,19 @@ class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
           ],
         ),
       ),
+
     );
   }
 }
+Future<int> getDocumentCount() async {
+  QuerySnapshot snapshot =
+  await FirebaseFirestore.instance.collection('attractions').get();
+  return snapshot.size;
+}
 
+extension StringExtension on String {
+  String capitalizeFirstLetter() {
+    if (isEmpty) return '';
+    return '${this[0].toUpperCase()}${substring(1)}';
+  }
+  }
