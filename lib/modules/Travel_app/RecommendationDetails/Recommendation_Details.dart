@@ -22,6 +22,8 @@ class _RecommendationDetailsScreenState extends State<RecommendationDetailsScree
   var feedbackController= TextEditingController();
   late User user;
   late DocumentSnapshot userData;
+  bool isIconFavorite = false;
+
   @override
   void initState(){
     super.initState();
@@ -67,6 +69,12 @@ class _RecommendationDetailsScreenState extends State<RecommendationDetailsScree
       opacity3 = 1.0;
     });
   }
+  void toggleIcon() {
+    setState(() {
+      isIconFavorite = !isIconFavorite;
+    });
+  }
+
   Widget build(BuildContext context) {
     final double tempHeight= MediaQuery.of(context).size.height-
         (MediaQuery.of(context).size.width/1.2)+
@@ -266,7 +274,7 @@ class _RecommendationDetailsScreenState extends State<RecommendationDetailsScree
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: <Widget>[
                                       GestureDetector(
-                                        onTap: saveDetailsToDatabase, // Call the function when the button is pressed
+                                        onTap: saveDetailsToDatabase,
                                         child: Container(
                                           width: 48,
                                           height: 48,
@@ -279,7 +287,8 @@ class _RecommendationDetailsScreenState extends State<RecommendationDetailsScree
                                               border: Border.all(color: Color(0xFF3A5160).withOpacity(0.2)),
                                             ),
                                             child: Icon(
-                                              Icons.favorite_border,                                              color: Color(0xFF132342),
+                                              isIconFavorite ? Icons.favorite : Icons.favorite_border,
+                                              color: Color(0xFF132342),
                                               size: 28,
                                             ),
                                           ),
@@ -404,6 +413,7 @@ class _RecommendationDetailsScreenState extends State<RecommendationDetailsScree
     );
   }
   void saveDetailsToDatabase() async {
+    toggleIcon();
     try {
       // Get the current user ID (you can replace this with your own logic to get the user ID)
       String userId = user.uid;

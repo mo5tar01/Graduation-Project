@@ -22,6 +22,7 @@ class _BucketListDetailsScreenState extends State<BucketListDetailsScreen> with 
   var feedbackController= TextEditingController();
   late User user;
   late DocumentSnapshot userData;
+  bool isIconFavorite = false;
   @override
   void initState(){
     super.initState();
@@ -67,6 +68,12 @@ class _BucketListDetailsScreenState extends State<BucketListDetailsScreen> with 
       opacity3 = 1.0;
     });
   }
+  void toggleIcon() {
+    setState(() {
+      isIconFavorite = !isIconFavorite;
+    });
+  }
+
   Widget build(BuildContext context) {
     final double tempHeight= MediaQuery.of(context).size.height-
         (MediaQuery.of(context).size.width/1.2)+
@@ -265,26 +272,49 @@ class _BucketListDetailsScreenState extends State<BucketListDetailsScreen> with 
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: <Widget>[
-                                      GestureDetector(
-                                        onTap: saveDetailsToDatabase, // Call the function when the button is pressed
-                                        child: Container(
-                                          width: 48,
-                                          height: 48,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: Color(0xFFFFFFFF),
-                                              borderRadius: const BorderRadius.all(
-                                                Radius.circular(12.0),
-                                              ),
-                                              border: Border.all(color: Color(0xFF3A5160).withOpacity(0.2)),
-                                            ),
-                                            child: Icon(
-                                                Icons.favorite_border,                                              color: Color(0xFF132342),
-                                              size: 28,
-                                            ),
+                                      // GestureDetector(
+                                      //   onTap: deleteDetailsFromDatabase, // Call the function when the button is pressed
+                                      //   child: Container(
+                                      //     width: 48,
+                                      //     height: 48,
+                                      //     child: Container(
+                                      //       decoration: BoxDecoration(
+                                      //         color: Color(0xFFFFFFFF),
+                                      //         borderRadius: const BorderRadius.all(
+                                      //           Radius.circular(12.0),
+                                      //         ),
+                                      //         border: Border.all(color: Color(0xFF3A5160).withOpacity(0.2)),
+                                      //       ),
+                                      //       child: Icon(
+                                      //           Icons.favorite,                                              color: Color(0xFF132342),
+                                      //         size: 28,
+                                      //
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                    GestureDetector(
+                                    onTap: deleteDetailsFromDatabase,
+                                    child: Container(
+                                      width: 48,
+                                      height: 48,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFFFFFFFF),
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(12.0),
                                           ),
+                                          border: Border.all(color: Color(0xFF3A5160).withOpacity(0.2)),
+                                        ),
+                                        child: Icon(
+                                          isIconFavorite ? Icons.favorite_border : Icons.favorite,
+                                          color: Color(0xFF132342),
+                                          size: 28,
                                         ),
                                       ),
+                                    ),
+                                  ),
+
                                       const SizedBox(
                                         width: 16,
                                       ),
@@ -403,14 +433,14 @@ class _BucketListDetailsScreenState extends State<BucketListDetailsScreen> with 
       ),
     );
   }
-  void saveDetailsToDatabase() async {
+  void deleteDetailsFromDatabase() async {
+    toggleIcon();
     try {
       // Get the current user ID (you can replace this with your own logic to get the user ID)
       String userId = user.uid;
 
       // Create a reference to the user's document in Firestore
-      DocumentReference userRef =
-      FirebaseFirestore.instance.collection('users').doc(userId);
+      DocumentReference userRef = FirebaseFirestore.instance.collection('users').doc(userId);
 
       // Get the existing bucket list array from the user's document
       DocumentSnapshot<Map<String, dynamic>> userSnapshot =
@@ -418,40 +448,40 @@ class _BucketListDetailsScreenState extends State<BucketListDetailsScreen> with 
       List<dynamic>? existingBucketList =
           userSnapshot.data()?['bucketList']?.cast<dynamic>() ?? [];
 
-      // Create a new bucket list item using the destination details
-      Map<String, dynamic> newBucketListItem = {
-        'name': widget.bucketItem['name'],
-        'city': widget.bucketItem['city'],
-        'country': widget.bucketItem['country'],
-        'imageURL': widget.bucketItem['imageURL'],
-        'rating': widget.bucketItem['rating'],
-        'description': widget.bucketItem['description'],
-        'subCategory': widget.bucketItem['subCategory'],
-        'subType': widget.bucketItem['subType'],
-        'rawRanking': widget.bucketItem['rawRanking'],
-        'rankingDenominator': widget.bucketItem['rankingDenominator'],
-        'rankingPosition': widget.bucketItem['rankingPosition'],
-        'numReviews': widget.bucketItem['numReviews'],
-      };
+      // Find the index of the item to delete in the bucket list array
+      int index = existingBucketList!.indexWhere((item) =>
+      item['name'] == widget.bucketItem['name'] &&
+          item['city'] == widget.bucketItem['city'] &&
+          item['country'] == widget.bucketItem['country']);
 
-      // Add the new bucket list item to the existing array
-      existingBucketList!.add(newBucketListItem);
+      if (index != -1) {
+        // Remove the item from the bucket list array
+        existingBucketList.removeAt(index);
 
-      // Update the bucket list array in the user's document
-      await userRef.update({'bucketList': existingBucketList});
+        // Update the bucket list array in the user's document
+        await userRef.update({'bucketList': existingBucketList});
 
-      // Show a success message
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          'Destination added to your bucket list.',
-          style: TextStyle(fontSize: 16),
-        ),
-      ));
+        // Show a success message
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            'Destination removed from your bucket list.',
+            style: TextStyle(fontSize: 16),
+          ),
+        ));
+      } else {
+        // Show a message if the item was not found in the bucket list
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            'Destination not found in your bucket list.',
+            style: TextStyle(fontSize: 16),
+          ),
+        ));
+      }
     } catch (error) {
       // Show an error message
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-          'Failed to add destination to bucket list.',
+          'Failed to remove destination from bucket list.',
           style: TextStyle(fontSize: 16),
         ),
       ));
