@@ -1,55 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:travel_recommendation/modules/Travel_app/RecommendationDetails/Recommendation_Details.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:travel_recommendation/modules/Travel_app/RecommendationDetails/Recommendation_Details.dart';
 import '../../../shared/components/components.dart';
+import '../BucketListDetails/DetailsBucketListScreen.dart';
+import '../recommendations/recommendations_screen.dart';
 
-class recommendationScreen extends StatefulWidget {
-  const recommendationScreen({Key? key}) : super(key: key);
+class forYouScreen extends StatefulWidget {
+  const forYouScreen({Key? key}) : super(key: key);
 
   @override
-  State<recommendationScreen> createState() => _recommendationScreenState();
+  State<forYouScreen> createState() => _forYouScreenState();
 }
 
-class _recommendationScreenState extends State<recommendationScreen> {
-  List<dynamic>? recommendationList;
+class _forYouScreenState extends State<forYouScreen> {
+  late List<dynamic> recommendationList;
 
   @override
   void initState() {
     super.initState();
-    fetchRecommendations();
+    loadJsonData().then((jsonData) {
+      setState(() {
+        recommendationList = jsonData;
+      });
+    });
   }
 
-  Future<void> fetchRecommendations() async {
-    try {
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        String userEmail = user.email!;
-        const baseUrl = 'https://f5d1-35-229-157-3.ngrok-free.app/';
-        const api = 'api/recommendations?user=';
-        final url = baseUrl + api + userEmail;
-
-        final response = await http.get(Uri.parse(url));
-
-        if (response.statusCode == 200) {
-          final responseBody = response.body;
-          setState(() {
-            recommendationList = jsonDecode(responseBody);
-          });
-        } else {
-          // Request failed
-          print('Request failed with status: ${response.statusCode}');
-        }
-      } else {
-        print('User is not logged in.');
-      }
-    } catch (e) {
-      // Error occurred during the request
-      print('Error: $e');
-    }
+  Future<List<dynamic>> loadJsonData() async {
+    String jsonString = await rootBundle.loadString('assets/trial2.json');
+    return jsonDecode(jsonString);
   }
 
   Widget build(BuildContext context) {
@@ -66,19 +45,15 @@ class _recommendationScreenState extends State<recommendationScreen> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: recommendationList != null && recommendationList!.isNotEmpty
-                  ? Column(
-                children: recommendationList!.map((item) {
+              child: Column(
+                children: recommendationList.map((item) {
                   String imageUrl = item['Image'];
                   String name = item['Name'];
                   String country = item['countryAddress'];
 
                   return GestureDetector(
                     onTap: () {
-                      navigateTo(
-                        context,
-                        RecommendationDetailsScreen(recommendationItem: item),
-                      );
+                      navigateTo(context, RecommendationDetailsScreen(recommendationItem: item));
                     },
                     child: Column(
                       children: [
@@ -132,8 +107,7 @@ class _recommendationScreenState extends State<recommendationScreen> {
                     ),
                   );
                 }).toList(),
-              )
-                  : CircularProgressIndicator(),
+              ),
             ),
           ],
         ),
@@ -182,7 +156,7 @@ class _recommendationScreenState extends State<recommendationScreen> {
                   ],
                 ),
                 child: const Text(
-                  'Recommendations',
+                  'Specially For You!',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 28,
@@ -226,30 +200,3 @@ class _recommendationScreenState extends State<recommendationScreen> {
   }
 }
 
-class AppBarPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    var rect = Offset.zero & size;
-    Paint paint = Paint();
-    Path path = Path();
-    paint.shader = const LinearGradient(
-      begin: Alignment.centerLeft,
-      end: Alignment.centerRight,
-      colors: [
-        Colors.lightBlueAccent,
-        Colors.blue,
-      ],
-    ).createShader(rect);
-    path.lineTo(0, size.height - size.height / 5);
-    path.conicTo(size.width / 2.2, size.height / 2, size.width, size.height - size.height / 5, 1);
-    path.lineTo(size.width, 0);
-    canvas.drawShadow(path, Colors.blue, 4, false);
-    path.close();
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-}

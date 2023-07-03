@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:travel_recommendation/Recommendation.dart';
 import 'package:travel_recommendation/modules/Travel_app/AttractionsSearchScreen/Attraction_Search_Screen.dart';
+import 'package:travel_recommendation/modules/Travel_app/ForYou/ForYou_Screen.dart';
 import '../../../shared/components/components.dart';
 import '../Details/Details_Screen.dart';
 import '../Firebase/firebase_auth.dart';
@@ -32,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //     myrecommedation.addAll(tmp);
   //   });
   // }
+
   Future<void> getData() async {
     try {
       List<Recommendation> tmp = await Auth.getDocs();
@@ -93,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //   await allPlaces.add(record);
     // }
   }
+
 
 
   @override
@@ -270,12 +273,45 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                child: MaterialButton(
-                  onPressed: () {
-                    navigateTo(context, recommendationScreen());
+                  child: MaterialButton(
+                    onPressed: () {
+                      navigateTo(context, recommendationScreen());
 
                   },
                   child: Text("Recommendations"),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(left: 50.0, right: 50.0),
+              child: Container(
+                margin: EdgeInsets.all(5),
+                padding: EdgeInsets.all(4),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.lightBlueAccent,
+                  border: Border.all(
+                    color: Colors.lightBlueAccent, // Set border color
+                    width: 3.0,
+                  ), // Set border width
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(30.0),
+                  ), // Set rounded corner radius
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 10.0,
+                      spreadRadius: 1.0,
+                    ),
+                  ],
+                ),
+                child: MaterialButton(
+                  onPressed: () {
+                    navigateTo(context, forYouScreen());
+
+                  },
+                  child: Text("For You"),
                 ),
               ),
             ),

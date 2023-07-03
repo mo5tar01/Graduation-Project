@@ -146,53 +146,56 @@ class _RecommendationDetailsScreenState extends State<RecommendationDetailsScree
                           Padding(
                             padding: const EdgeInsets.only(
                               left: 16, right: 16, bottom: 8, top: 16,),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  child: Row(
-                                    children: <Widget>[
-                                      Text(
-                                        widget.recommendationItem['cityAddress']+', ' + widget.recommendationItem['countryAddress'],
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w200,
-                                          fontSize: 22,
-                                          letterSpacing: 0.27,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text(
+                                          widget.recommendationItem['cityAddress']+', ' + widget.recommendationItem['countryAddress'],
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w200,
+                                            fontSize: 22,
+                                            letterSpacing: 0.27,
+                                            color: Color(0xFF132342),
+
+                                          ),
+                                        ),
+                                        SizedBox(width: 3,),
+                                        Icon(Icons.pin_drop,
                                           color: Color(0xFF132342),
-
-                                        ),
-                                      ),
-                                      SizedBox(width: 3,),
-                                      Icon(Icons.pin_drop,
-                                        color: Color(0xFF132342),
-                                        size: 24.0,),
-                                    ],
+                                          size: 24.0,),
+                                      ],
+                                    ),
                                   ),
-                                ),
 
-                                Container(
-                                  child: Row(
-                                    children: <Widget>[
-                                      Text(widget.recommendationItem['Rating'].toString(),
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w200,
-                                          fontSize: 22,
-                                          letterSpacing: 0.27,
-                                          color: Color(0xFF3A5160),
+                                  Container(
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text(widget.recommendationItem['Rating'].toString(),
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w200,
+                                            fontSize: 22,
+                                            letterSpacing: 0.27,
+                                            color: Color(0xFF3A5160),
+                                          ),
                                         ),
-                                      ),
-                                      Icon(
-                                        Icons.star,
-                                        color: Color(0xFF132342),
-                                        size: 24.0,
-                                      ),
-                                    ],
+                                        Icon(
+                                          Icons.star,
+                                          color: Color(0xFF132342),
+                                          size: 24.0,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                           AnimatedOpacity(
