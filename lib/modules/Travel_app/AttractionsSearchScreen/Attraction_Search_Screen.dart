@@ -86,19 +86,48 @@ class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
     super.dispose();
   }
 
+  // void searchInFirestore(String query) {
+  //   setState(() {
+  //     _searchResultsStream = FirebaseFirestore.instance
+  //         .collection('attractions')
+  //         .where('Name', isGreaterThanOrEqualTo: query)
+  //         .orderBy('Name')
+  //         .get()
+  //         .then<QuerySnapshot>((snapshot) {
+  //       if (snapshot.docs.isEmpty) {
+  //         return FirebaseFirestore.instance
+  //             .collection('attractions')
+  //             .where('cityAddress', isGreaterThanOrEqualTo: query)
+  //             .orderBy('cityAddress')
+  //             .get();
+  //       } else {
+  //         return Future.value(snapshot);
+  //       }
+  //     })
+  //         .then<QuerySnapshot>((snapshot) {
+  //       if (snapshot.docs.isEmpty) {
+  //         return FirebaseFirestore.instance
+  //             .collection('attractions')
+  //             .where('subCategory', isEqualTo: selectedCategory)
+  //             .get();
+  //       } else {
+  //         return Future.value(snapshot);
+  //       }
+  //     })
+  //         .asStream();
+  //   });
+  // }
   void searchInFirestore(String query) {
     setState(() {
       _searchResultsStream = FirebaseFirestore.instance
           .collection('attractions')
-          .where('Name', isGreaterThanOrEqualTo: query)
-          .orderBy('Name')
+          .where('Name', isEqualTo: query)
           .get()
           .then<QuerySnapshot>((snapshot) {
         if (snapshot.docs.isEmpty) {
           return FirebaseFirestore.instance
               .collection('attractions')
-              .where('cityAddress', isGreaterThanOrEqualTo: query)
-              .orderBy('cityAddress')
+              .where('cityAddress', isEqualTo: query)
               .get();
         } else {
           return Future.value(snapshot);
@@ -117,6 +146,7 @@ class _AttractionsSearchScreenState extends State<AttractionsSearchScreen> {
           .asStream();
     });
   }
+
 
   void selectCategory(String category) {
     setState(() {
@@ -303,4 +333,4 @@ extension StringExtension on String {
     if (isEmpty) return '';
     return '${this[0].toUpperCase()}${substring(1)}';
   }
-  }
+}
