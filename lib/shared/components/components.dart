@@ -3,9 +3,10 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../cubit/cubit.dart';
 
 Widget defaultButton({
- double width = double.infinity,
+  double width = double.infinity,
   Color background = Colors.blue,
   double radius = 3.0,
   required Function buttonPressed,
@@ -17,18 +18,18 @@ Widget defaultButton({
     borderRadius: BorderRadius.circular(radius),
     color: background,
   ),
-width: width,
+  width: width,
 
-child: MaterialButton(
-onPressed:(){},
-child: Text(
-text.toUpperCase(),
-style:TextStyle(
-color:Colors.white,
-),
-),
+  child: MaterialButton(
+    onPressed:(){},
+    child: Text(
+      text.toUpperCase(),
+      style:TextStyle(
+        color:Colors.white,
+      ),
+    ),
 
-),
+  ),
 );
 Widget roundedButton({
 
@@ -40,27 +41,27 @@ Widget roundedButton({
 
 }) =>
     Container(
-  decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(radius),
-    color: background,
-  ),
-width: width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(radius),
+        color: background,
+      ),
+      width: width,
 
-child: MaterialButton(
-onPressed:(){},
-child: Text(
-text.toUpperCase(),
-style:TextStyle(
-color:Colors.white,
-),
-),
+      child: MaterialButton(
+        onPressed:(){},
+        child: Text(
+          text.toUpperCase(),
+          style:TextStyle(
+            color:Colors.white,
+          ),
+        ),
 
-),
-);
+      ),
+    );
 Widget defaultFormField({
   required TextEditingController controller,
   required TextInputType type,
-   onTap,
+  onTap,
   onSubmit,
   onChange,
   required String labelText,
@@ -69,9 +70,9 @@ Widget defaultFormField({
   IconData? suffix,
   isClickable = true,
 }) => TextFormField(
-controller: controller,
-keyboardType: type,
-onTap:onTap,
+  controller: controller,
+  keyboardType: type,
+  onTap:onTap,
   validator: validate,
   onFieldSubmitted: onSubmit,
   onChanged: onChange,
@@ -90,7 +91,7 @@ onTap:onTap,
 Widget roundedFormField({
   required TextEditingController controller,
   required TextInputType type,
-   onTap,
+  onTap,
   onSubmit,
   onChange,
   required String labelText,
@@ -98,11 +99,11 @@ Widget roundedFormField({
   IconData? suffix,
   required validate,
   Function? suffixPressed,
-   isClickable = true,
+  isClickable = true,
 }) => TextFormField(
-controller: controller,
-keyboardType: type,
-onTap:onTap,
+  controller: controller,
+  keyboardType: type,
+  onTap:onTap,
   validator: validate,
   onFieldSubmitted: onSubmit,
   onChanged: onChange,
@@ -124,129 +125,7 @@ onTap:onTap,
 
 );
 
-Widget buildTaskItem(Map model, context)=> Dismissible(
-  key: Key(model['id'].toString()),
-  child: Padding(
-  
-    padding: const EdgeInsets.all(20.0),
-  
-    child: Row(
-  
-      children: [
-  
-        CircleAvatar(
-  
-          backgroundColor: Colors.blueAccent,
-  
-          radius: 40.0,
-  
-          child: Text(
-  
-            '${model['time']} ',
-  
-          ),
-  
-        ),
-  
-        SizedBox(
-  
-          width: 20.0,
-  
-        ),
-  
-        Expanded(
-  
-          child: Column(
-  
-            mainAxisSize:MainAxisSize.min ,
-  
-            crossAxisAlignment: CrossAxisAlignment.start,
-  
-            children: [
-  
-               Text(
-  
-                  '${model['title']}',
-  
-                  style: TextStyle(
-  
-                    fontSize: 18.0,
-  
-                    fontWeight: FontWeight.bold,
-  
 
-  
-                ),
-  
-              ),
-  
-              Text(
-  
-                '${model['date']}',
-  
-                style: TextStyle(
-  
-                  color: Colors.grey,
-  
-                ),
-  
-              ),
-  
-  
-  
-            ],
-  
-          ),
-  
-        ),
-  
-        SizedBox(
-  
-          width: 20.0,
-  
-        ),
-  
-
-  
-
-  
-  
-  
-  
-      ],
-  
-    ),
-  
-  ),
-);
-Widget tasksBuilder({
- required  List<Map> tasks,}) => ConditionalBuilder(
-  condition: tasks.length  >0,
-  builder: (context) => ListView.separated(
-      itemBuilder: (context, index) => buildTaskItem(tasks[index] , context),
-      separatorBuilder: (context, index) => myDivider(),
-      itemCount: tasks.length),
-  fallback: (context) => Center(
-    child: Column(
-        mainAxisAlignment:MainAxisAlignment.center,
-        children:[
-          Icon(
-            Icons.menu,
-            size: 100,
-            color:Colors.grey,
-          ),
-          Text(
-            'No Tasks Yet , Please Add Some Tasks',
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey,
-            ),
-          ),
-        ]
-    ),
-  ),
-);
 
 Widget myDivider() =>Padding(
   padding: const EdgeInsetsDirectional.only(
@@ -261,7 +140,7 @@ Widget myDivider() =>Padding(
 void navigateTo(context , widget) => Navigator.push(
   context, MaterialPageRoute(
     builder: (context) => widget
-  ),
+),
 );
 void navigateAndFinish(context, widget) => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => widget,),
-        (Route<dynamic> route) => false,);
+      (Route<dynamic> route) => false,);

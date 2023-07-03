@@ -22,5 +22,15 @@ class ShopCubit extends Cubit<ShopStates>{
     currentIndex = index;
     emit(ShopChangeBottomNavState());
   }
+  bool isDark = false;
+  ThemeMode appMode = ThemeMode.dark;
+  void changeAppMode(){
+
+    isDark = !isDark;
+
+
+    emit(AppChangeModeState());
+
+  }
 
 }

@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:travel_recommendation/layout/TravelApp/cubit/cubit.dart';
+import 'package:travel_recommendation/modules/Travel_app/AboutScreen/AboutScreen.dart';
 import 'package:travel_recommendation/modules/Travel_app/Main/Home_Screen.dart';
 import 'package:travel_recommendation/modules/Travel_app/login/travel_login_screen.dart';
 import '../../../shared/components/components.dart';
@@ -89,17 +91,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     navigateTo(context, UpdatePreferencesPage(userId: '',));
     // TODO: Implement navigation to Edit Preferences page
   }
-  bool isDark = false;
-  ThemeMode appMode = ThemeMode.dark;
-
 
   void _navigateToThemeSettings() {
-    isDark = !isDark;
-// TODO: Implement navigation to Language Settings page
+    ShopCubit.get(context).changeAppMode();
   }
 
   void _navigateToAboutPage() {
-    // TODO: Implement navigation to About page
+navigateTo(context, AboutScreen());
   }
 
   void _signOut() {
