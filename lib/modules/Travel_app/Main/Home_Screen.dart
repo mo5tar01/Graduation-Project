@@ -25,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late User user;
   late DocumentSnapshot userData;
   List<Recommendation> myrecommedation = [];
+  bool isLoading = true;
   // Future<void> getData() async {
   //   List<Recommendation> tmp = await Auth.getDocs();
   //
@@ -112,11 +113,16 @@ class _HomeScreenState extends State<HomeScreen> {
       if (document.exists) {
         setState(() {
           userData = document;
+          isLoading = false;
+
         });
       }
     }).onError((error, stackTrace) {
       print('Error retrieving document: $error');
       print('Stack trace: $stackTrace');
+      setState(() {
+        isLoading = false; // Mark loading as complete if an error occurs
+      });
     });
   }
 
@@ -163,8 +169,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (!userData.exists) {
-      // Return a loading indicator until the data is loaded
+    if (isLoading) {
+      // Show loading indicator if data is still loading
       return Center(child: CircularProgressIndicator());
     }
     String userName = userData['name'];
@@ -282,39 +288,39 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.only(left: 50.0, right: 50.0),
-              child: Container(
-                margin: EdgeInsets.all(5),
-                padding: EdgeInsets.all(4),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.lightBlueAccent,
-                  border: Border.all(
-                    color: Colors.lightBlueAccent, // Set border color
-                    width: 3.0,
-                  ), // Set border width
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(30.0),
-                  ), // Set rounded corner radius
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 10.0,
-                      spreadRadius: 1.0,
-                    ),
-                  ],
-                ),
-                child: MaterialButton(
-                  onPressed: () {
-                    navigateTo(context, forYouScreen());
-
-                  },
-                  child: Text("For You"),
-                ),
-              ),
-            ),
+            // SizedBox(height: 20),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 50.0, right: 50.0),
+            //   child: Container(
+            //     margin: EdgeInsets.all(5),
+            //     padding: EdgeInsets.all(4),
+            //     alignment: Alignment.center,
+            //     decoration: BoxDecoration(
+            //       color: Colors.lightBlueAccent,
+            //       border: Border.all(
+            //         color: Colors.lightBlueAccent, // Set border color
+            //         width: 3.0,
+            //       ), // Set border width
+            //       borderRadius: BorderRadius.all(
+            //         Radius.circular(30.0),
+            //       ), // Set rounded corner radius
+            //       boxShadow: [
+            //         BoxShadow(
+            //           color: Colors.black.withOpacity(0.2),
+            //           blurRadius: 10.0,
+            //           spreadRadius: 1.0,
+            //         ),
+            //       ],
+            //     ),
+            //     child: MaterialButton(
+            //       onPressed: () {
+            //         navigateTo(context, forYouScreen());
+            //
+            //       },
+            //       child: Text("For You"),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

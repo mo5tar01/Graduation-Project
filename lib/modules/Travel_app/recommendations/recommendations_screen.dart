@@ -28,7 +28,7 @@ class _recommendationScreenState extends State<recommendationScreen> {
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         String userEmail = user.email!;
-        const baseUrl = 'https://f5d1-35-229-157-3.ngrok-free.app/';
+        const baseUrl = 'https://4974-35-201-252-166.ngrok-free.app/';
         const api = 'api/recommendations?user=';
         final url = baseUrl + api + userEmail;
 

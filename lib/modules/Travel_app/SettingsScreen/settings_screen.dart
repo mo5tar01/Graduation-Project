@@ -23,6 +23,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   late User user;
   late DocumentSnapshot userData;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -37,11 +38,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (document.exists) {
         setState(() {
           userData = document;
+          isLoading = false;
+
         });
       }
     }).onError((error, stackTrace) {
       print('Error retrieving document: $error');
       print('Stack trace: $stackTrace');
+      setState(() {
+        isLoading = false; // Mark loading as complete if an error occurs
+      });
+
     });
   }
 
@@ -106,8 +113,8 @@ navigateTo(context, AboutScreen());
 
   @override
   Widget build(BuildContext context) {
-    if (!userData.exists) {
-      // Return a loading indicator until the data is loaded
+    if (isLoading) {
+      // Show loading indicator if data is still loading
       return Center(child: CircularProgressIndicator());
     }
     String userName = userData['name'];
